@@ -1,7 +1,7 @@
 """Build causal, masked training windows from synthetic episodes.
 
 This demonstrates data contracts, not a physical robot or a trained policy.
-Run from the paper workspace root:
+Run from the RobotLearning workspace root:
     python robot_learning/labs/02_episode_windows.py --output robot_learning/labs/results/lab02_episode_windows.json
 """
 

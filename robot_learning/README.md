@@ -2,6 +2,8 @@
 
 这个目录用于系统学习 Vision-Language-Action（VLA）、Physical Intelligence 的 π 系列，以及接触丰富操作中的力觉与顺应控制。
 
+论文 PDF 统一放在项目根目录的 [paper/](../paper/README.md)，本目录存放课程、实验、计划与资源索引。
+
 当前执行：[第 4–19 课：8 周 Robot Learning 课程计划](planning/course_plan.md)，按每周 8–10 小时推进。保留 [第 4 课：概率视角的 BC](notes/04_probabilistic_bc_and_training.md)，从 [第 5 课：训练、数据与观测](notes/05_training_data_and_observation.md) 接着准备。配套 [代码实验](labs/README.md)、[学习记录](planning/progress.md) 和 [资源地图](resources/resource_map.md) 均位于本目录。
 
 ## 目录职责

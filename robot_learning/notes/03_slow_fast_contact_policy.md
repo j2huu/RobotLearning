@@ -14,9 +14,9 @@
 
 本课论文：
 
-- [RDP：Reactive Diffusion Policy](../../2503.02881v3.pdf)
-- [ImplicitRDP](../../2512.10946v1.pdf)
-- [Force Policy](../../2602.22088v2.pdf)
+- [RDP：Reactive Diffusion Policy](../../paper/2503.02881v3.pdf)
+- [ImplicitRDP](../../paper/2512.10946v1.pdf)
+- [Force Policy](../../paper/2602.22088v2.pdf)
 
 ---
 

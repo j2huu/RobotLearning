@@ -340,9 +340,9 @@ FAST 是 action tokenizer；π0-FAST 是使用它训练出的 VLA policy。二�
 
 这一课解释了本地资料反复出现 slow-fast 结构的原因：
 
-- [ImplicitRDP](../../2512.10946v1.pdf)：生成式视觉策略负责较慢的 chunk planning，force 负责更快的局部反应。
-- [FAVLA](../../2602.23648v1.pdf)：slow VLM 不能以 force sensor 的频率重算，因此让 fast action expert 利用 force/state。
-- [PhaForce](../../2603.08342v1.pdf)：仅有 fast residual 还不够，还要根据接触阶段决定何时、在哪个子空间修正。
+- [ImplicitRDP](../../paper/2512.10946v1.pdf)：生成式视觉策略负责较慢的 chunk planning，force 负责更快的局部反应。
+- [FAVLA](../../paper/2602.23648v1.pdf)：slow VLM 不能以 force sensor 的频率重算，因此让 fast action expert 利用 force/state。
+- [PhaForce](../../paper/2603.08342v1.pdf)：仅有 fast residual 还不够，还要根据接触阶段决定何时、在哪个子空间修正。
 
 它们共同针对同一个结构性矛盾：
 

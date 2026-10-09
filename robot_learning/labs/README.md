@@ -6,7 +6,7 @@
 
 ## 运行位置与结果
 
-下面的命令都从论文工作区根目录 `Paper/` 执行。实验代码在 `robot_learning/labs/`，讲义在同级 `notes/`，运行结果写入本目录的 `results/`。小型 JSON 与实验说明由 Git 跟踪，大型 checkpoint 与运行缓存会被忽略。
+下面的命令都从论文工作区根目录 `RobotLearning/` 执行。实验代码在 `robot_learning/labs/`，讲义在同级 `notes/`，运行结果写入本目录的 `results/`。小型 JSON 与实验说明由 Git 跟踪，大型 checkpoint 与运行缓存会被忽略。
 
 | 当前代码 | 对应讲义 | 输出 |
 |---|---|---|
