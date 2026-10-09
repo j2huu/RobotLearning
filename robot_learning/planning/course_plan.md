@@ -2,11 +2,11 @@
 
 制定日期：2026-10-09。学习投入：每周 8–10 小时。沿用已经学习的第 1–3 课，不重新从头开始。
 
-本文件是接下来的执行计划；[VLA 与 π 系列路线](VLA_PI_STUDY_ROADMAP.md) 保留为主题参考。课程按知识依赖排序，以本地论文做案例，以小实验检查理解，以英文口述连接实习和面试。
+本文件是接下来的执行计划；[VLA 与 π 系列路线](../resources/vla_pi_roadmap.md) 保留为主题参考。课程按知识依赖排序，以本地论文做案例，以小实验检查理解，以英文口述连接实习和面试。
 
-目录约定：课程、计划、进度、资源索引与实验都放在 `notes/` 下；根目录 README 提供入口。第 4 课保留原编号，当前从 [第 5 课](05_training_data_and_observation.md) 接着准备，后续沿用第 6–19 课。
+目录约定：学习项目位于 `robot_learning/`，讲义在 `notes/`，代码在 `labs/`，计划与进度在 `planning/`，论文索引与参考资源在 `resources/`。项目 README 提供入口。第 4 课保留原编号，当前从 [第 5 课](../notes/05_training_data_and_observation.md) 接着准备，后续沿用第 6–19 课。
 
-参考用户提供的两个仓库后，补入 dataset/benchmark/simulation、异构 policy pretraining 和动作 tokenization 的对照；映射见 [资源地图](RESOURCE_MAP.md)。
+参考用户提供的两个仓库后，补入 dataset/benchmark/simulation、异构 policy pretraining 和动作 tokenization 的对照；映射见 [资源地图](../resources/resource_map.md)。
 
 ## 1. 当前起点与目标
 
@@ -59,14 +59,14 @@ CVAE / diffusion / flow ──→ VLM → VLA → π0 / FAST / π0.5
 
 | 周 | 两次课程 | ML 背景与关键问题 | 主读/对照 | 本周代码产出 |
 |---|---|---|---|---|
-| 1 | **4：概率视角的 BC**；**5：训练、数据与观测** | conditional distribution、MLE/NLL、MSE、梯度/Adam、正则化；POMDP、history、episode split、时间对齐。为什么低 loss 不保证 rollout 成功？ | [第 4 课讲义](04_probabilistic_bc_and_training.md)；[CR-DAgger](../NeurIPS-2025-compliant-residual-dagger-improving-real-world-contact-rich-manipulation-with-human-corrections-Paper-Conference.pdf) 的问题定义 | **Lab 01**：MSE / Gaussian / mixture policy 对比；**Lab 02 起步**：数据字段、split、normalization |
-| 2 | **6：多模态表示学习**；**7：Transformer 与因果性** | supervised/self-supervised、reconstruction、contrastive、bottleneck、shortcut；Q/K/V、cross-attention、causal mask、cache。怎样确认 policy 使用了 force？ | [Making Sense of Vision and Touch](../1810.10191v2.pdf)、[FACTR](../2502.17432v2.pdf)；回看 [ImplicitRDP](../2512.10946v1.pdf) 与 FP2 compressor | **Lab 03**：future-force perturbation 验证 mask；modality ablation/force shuffle |
+| 1 | **4：概率视角的 BC**；**5：训练、数据与观测** | conditional distribution、MLE/NLL、MSE、梯度/Adam、正则化；POMDP、history、episode split、时间对齐。为什么低 loss 不保证 rollout 成功？ | [第 4 课讲义](../notes/04_probabilistic_bc_and_training.md)；[CR-DAgger](../../NeurIPS-2025-compliant-residual-dagger-improving-real-world-contact-rich-manipulation-with-human-corrections-Paper-Conference.pdf) 的问题定义 | **Lab 01**：MSE / Gaussian / mixture policy 对比；**Lab 02 起步**：数据字段、split、normalization |
+| 2 | **6：多模态表示学习**；**7：Transformer 与因果性** | supervised/self-supervised、reconstruction、contrastive、bottleneck、shortcut；Q/K/V、cross-attention、causal mask、cache。怎样确认 policy 使用了 force？ | [Making Sense of Vision and Touch](../../1810.10191v2.pdf)、[FACTR](../../2502.17432v2.pdf)；回看 [ImplicitRDP](../../2512.10946v1.pdf) 与 FP2 compressor | **Lab 03**：future-force perturbation 验证 mask；modality ablation/force shuffle |
 | 3 | **8：CVAE 与 Diffusion Policy**；**9：Flow Matching** | latent、reparameterization、KL/ELBO；forward noise、noise prediction、DDIM；path、velocity target、ODE。生成时间与机器人时间如何区分？ | [ACT 项目](https://tonyzhaozh.github.io/aloha/)、[DP 项目](https://diffusion-policy.cs.columbia.edu/)、[Flow Matching](https://arxiv.org/abs/2210.02747)；回看 RDP tokenizer | **Lab 04**：在同一个小型多峰数据集上实现 diffusion 与 flow；对比采样步数、分布和耗时 |
 | 4 | **10：从 VLM 到 VLA**；**11：π0 完整架构** | image tokens、language tokens、projector、预训练/迁移、cross-embodiment；prefix/suffix、action expert、state/time embedding。语义怎样条件化连续动作？ | [Open X](https://robotics-transformer-x.github.io/) 作数据背景；[Octo](https://octo-models.github.io/) / [OpenVLA](https://openvla.github.io/) 作架构对照；[π0](https://arxiv.org/abs/2410.24164) 主读 | **Lab 05 起步**：画 tensor/attention 图；阅读固定版本 openpi，追一次 observation → loss |
-| 5 | **12：FAST 与 π0.5**；**13：动作与控制接口** | action tokenization、CE/autoregression、co-training、subtasks；joint/Cartesian、absolute/delta、rotation、force/TCP frame、multi-rate schedule | [FAST](https://arxiv.org/abs/2501.09747)、[π0.5](https://arxiv.org/abs/2504.16054) 的指定章节；[AVP](../2409.14440v2.pdf) 与 Force Policy 作接口对照 | **Lab 02 完成**：chunk、mask、归一化 round trip、frame transform；**Lab 06 起步**：slow-fast 调度实验 |
-| 6 | **14：力觉融合与 foundation adaptation**；**15：泛化与实验设计** | early/late fusion、distillation、curriculum、LoRA vs sidecar、冻结策略；OOD、matched ablation、多个 seed、force/time 指标 | [FP2](../ICRA27_2601_MS.pdf) 主读；[CRAFT](../2602.12532v1.pdf) / [FAVLA](../2602.23648v1.pdf) 二选一主对照；FD-VLA 与 CompliantVLA 查表 | **Lab 06 完成**：cached context + fast force feedback + transition；形成五组消融与失败分析 |
-| 7 | **16：RL 基础与 Actor-Critic**；**17：Offline RL、DAgger 与 Residual Learning** | return、V/Q、Bellman、TD、policy gradient、actor/critic；offline support、extrapolation、expert correction、residual objective。示范与 reward 各提供什么？ | [Berkeley CS285](https://rail.eecs.berkeley.edu/deeprlcourse/) 的 IL/RL/offline 章节；[原始 DAgger](https://proceedings.mlr.press/v15/ross11a.html)；[CR-DAgger](../NeurIPS-2025-compliant-residual-dagger-improving-real-world-contact-rich-manipulation-with-human-corrections-Paper-Conference.pdf) 主读 | **Lab 07**：小环境 Bellman/TD；同环境 BC vs DAgger；offline action support 小反例 |
-| 8 | **18：Dynamics、MPC 与 World Models**；**19：代码闭环与面试整合** | learned dynamics、prediction rollout、model error、receding horizon；world model 与 action policy；data → loss → inference → execution | CS285 model-based 章节；[openpi 官方代码](https://github.com/Physical-Intelligence/openpi)；[FP2](../ICRA27_2601_MS.pdf) 综合复盘 | **Lab 08**：小型 dynamics + MPC；**Lab 05 完成**：openpi 数据流报告；FP2 capstone 与英文模拟面试 |
+| 5 | **12：FAST 与 π0.5**；**13：动作与控制接口** | action tokenization、CE/autoregression、co-training、subtasks；joint/Cartesian、absolute/delta、rotation、force/TCP frame、multi-rate schedule | [FAST](https://arxiv.org/abs/2501.09747)、[π0.5](https://arxiv.org/abs/2504.16054) 的指定章节；[AVP](../../2409.14440v2.pdf) 与 Force Policy 作接口对照 | **Lab 02 完成**：chunk、mask、归一化 round trip、frame transform；**Lab 06 起步**：slow-fast 调度实验 |
+| 6 | **14：力觉融合与 foundation adaptation**；**15：泛化与实验设计** | early/late fusion、distillation、curriculum、LoRA vs sidecar、冻结策略；OOD、matched ablation、多个 seed、force/time 指标 | [FP2](../../ICRA27_2601_MS.pdf) 主读；[CRAFT](../../2602.12532v1.pdf) / [FAVLA](../../2602.23648v1.pdf) 二选一主对照；FD-VLA 与 CompliantVLA 查表 | **Lab 06 完成**：cached context + fast force feedback + transition；形成五组消融与失败分析 |
+| 7 | **16：RL 基础与 Actor-Critic**；**17：Offline RL、DAgger 与 Residual Learning** | return、V/Q、Bellman、TD、policy gradient、actor/critic；offline support、extrapolation、expert correction、residual objective。示范与 reward 各提供什么？ | [Berkeley CS285](https://rail.eecs.berkeley.edu/deeprlcourse/) 的 IL/RL/offline 章节；[原始 DAgger](https://proceedings.mlr.press/v15/ross11a.html)；[CR-DAgger](../../NeurIPS-2025-compliant-residual-dagger-improving-real-world-contact-rich-manipulation-with-human-corrections-Paper-Conference.pdf) 主读 | **Lab 07**：小环境 Bellman/TD；同环境 BC vs DAgger；offline action support 小反例 |
+| 8 | **18：Dynamics、MPC 与 World Models**；**19：代码闭环与面试整合** | learned dynamics、prediction rollout、model error、receding horizon；world model 与 action policy；data → loss → inference → execution | CS285 model-based 章节；[openpi 官方代码](https://github.com/Physical-Intelligence/openpi)；[FP2](../../ICRA27_2601_MS.pdf) 综合复盘 | **Lab 08**：小型 dynamics + MPC；**Lab 05 完成**：openpi 数据流报告；FP2 capstone 与英文模拟面试 |
 
 第 10 课中的 RT-1/RT-2 只用于解释历史和设计选择，不要求当周精读整个演化链。第 12 课只精读 FAST 的 tokenizer 和 π0.5 的 co-training/hierarchy 相关部分。第 16–18 课的代码均用小环境，SAC 全量复现与大型 world-model 训练列为进阶任务。
 
@@ -108,7 +108,7 @@ Lab 07: interactive data / return / offline support
 Lab 08: learned dynamics + planning
 ```
 
-详细实现规格见 [实验说明](labs/README.md)。[概率 BC 实验](labs/01_probabilistic_bc.py) 和 [episode 数据窗口实验](labs/02_episode_windows.py) 已可运行。Lab 02 的 frame/action conversion 与其余实验按课程顺序实现。
+详细实现规格见 [实验说明](../labs/README.md)。[概率 BC 实验](../labs/01_probabilistic_bc.py) 和 [episode 数据窗口实验](../labs/02_episode_windows.py) 已可运行。Lab 02 的 frame/action conversion 与其余实验按课程顺序实现。
 
 所有实验先记录 seed、数据生成方式、split 和指标。先使小 batch/小环境工作，再扩展容量。toy result 只支持对应机制的结论，不声称复现论文的机器人成功率。
 
@@ -124,7 +124,7 @@ Lab 08: learned dynamics + planning
 | 力觉 VLA 与迁移 | FP2；CRAFT/FAVLA 选一 | CompliantVLA-adaptor、FD-VLA、ForceVLA2、AT-VLA、VLF-DiT |
 | 交互数据与纠错 | CR-DAgger | 对照原始 DAgger |
 
-所有本地文件对应关系见 [论文索引](PAPER_INDEX.md)。匿名/审稿论文用于讨论当前稿件，不视为已正式接收，也不据此推断 release 或公开代码状态。
+所有本地文件对应关系见 [论文索引](../resources/paper_index.md)。匿名/审稿论文用于讨论当前稿件，不视为已正式接收，也不据此推断 release 或公开代码状态。
 
 ## 8. 需要补充的主干资料
 
@@ -144,7 +144,7 @@ Lab 08: learned dynamics + planning
 
 ## 9. 面试与进度记录
 
-使用 [学习记录](LEARNING_PROGRESS.md) 保存每课产出与未解决问题。主讲以中文解释并保留英文术语；每周英文口述围绕三个层级：
+使用 [学习记录](progress.md) 保存每课产出与未解决问题。主讲以中文解释并保留英文术语；每周英文口述围绕三个层级：
 
 1. 90 秒：定义概念与核心问题。
 2. 5 分钟：解释输入、输出、loss、inference 和 controller。
@@ -152,4 +152,4 @@ Lab 08: learned dynamics + planning
 
 最终 FP2 capstone 包括：完整框图、2/50/1000 Hz 时序、compressor 训练、twist–wrench/frame/mask、五组消融和两个失败案例。自己的实习贡献以实际参与记录为依据，避免把团队整体结果描述为个人独立实现。
 
-继续：[第 5 课：训练、数据与观测](05_training_data_and_observation.md)。第 4 课的概率推导和 Lab 01 作为前置内容保留。
+继续：[第 5 课：训练、数据与观测](../notes/05_training_data_and_observation.md)。第 4 课的概率推导和 Lab 01 作为前置内容保留。

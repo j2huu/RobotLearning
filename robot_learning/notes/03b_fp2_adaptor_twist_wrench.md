@@ -4,8 +4,8 @@
 
 参考论文：
 
-- [FP2: Equipping Robotic Foundation Models with Force Control](../ICRA27_2601_MS.pdf)
-- [Force Policy](../2602.22088v2.pdf)
+- [FP2: Equipping Robotic Foundation Models with Force Control](../../ICRA27_2601_MS.pdf)
+- [Force Policy](../../2602.22088v2.pdf)
 
 ---
 

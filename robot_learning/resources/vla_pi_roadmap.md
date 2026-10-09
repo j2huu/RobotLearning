@@ -1,6 +1,6 @@
 # VLA 与 π 系列系统学习路线
 
-2026-10-09 更新：完成前 3 课的讲解后，当前按 [第 4–19 课执行计划](ROBOT_LEARNING_COURSE_PLAN.md) 推进，每周 8–10 小时，补概率/优化、表示、RL、模型学习与代码实验。本文件保留为 VLA 主题地图；具体课号、节奏和验收以执行计划为准。
+2026-10-09 更新：完成前 3 课的讲解后，当前按 [第 4–19 课执行计划](../planning/course_plan.md) 推进，每周 8–10 小时，补概率/优化、表示、RL、模型学习与代码实验。本文件保留为 VLA 主题地图；具体课号、节奏和验收以执行计划为准。
 
 ## 目标
 
@@ -41,8 +41,8 @@ $$
 
 本地阅读：
 
-- [CR-DAgger](../NeurIPS-2025-compliant-residual-dagger-improving-real-world-contact-rich-manipulation-with-human-corrections-Paper-Conference.pdf)：用它理解 covariate shift、on-policy correction 和 residual policy。
-- [Making Sense of Vision and Touch](../1810.10191v2.pdf)：把多模态表征与策略学习分开看。
+- [CR-DAgger](../../NeurIPS-2025-compliant-residual-dagger-improving-real-world-contact-rich-manipulation-with-human-corrections-Paper-Conference.pdf)：用它理解 covariate shift、on-policy correction 和 residual policy。
+- [Making Sense of Vision and Touch](../../1810.10191v2.pdf)：把多模态表征与策略学习分开看。
 
 ### M1：Action chunk 与序列策略（3-4 天）
 
@@ -70,9 +70,9 @@ $$
 
 本地阅读：
 
-- [Adaptive Compliance Policy](../2410.09309v2.pdf)：diffusion action 与动态顺应参数如何组合。
-- [Reactive Diffusion Policy](../2503.02881v3.pdf) → [ImplicitRDP](../2512.10946v1.pdf)：为什么 chunk-level policy 需要高频修正，以及显式层级与结构性 slow-fast 的取舍。
-- [PhaForce](../2603.08342v1.pdf)：slow planner / fast corrector 与 phase schedule。
+- [Adaptive Compliance Policy](../../2410.09309v2.pdf)：diffusion action 与动态顺应参数如何组合。
+- [Reactive Diffusion Policy](../../2503.02881v3.pdf) → [ImplicitRDP](../../2512.10946v1.pdf)：为什么 chunk-level policy 需要高频修正，以及显式层级与结构性 slow-fast 的取舍。
+- [PhaForce](../../2603.08342v1.pdf)：slow planner / fast corrector 与 phase schedule。
 
 ### M3：从 VLM 到 VLA（1 周）
 

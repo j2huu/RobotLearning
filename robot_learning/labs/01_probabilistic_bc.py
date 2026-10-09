@@ -2,7 +2,7 @@
 
 This is a CPU teaching experiment, not a robot rollout or paper reproduction.
 Run from the workspace root:
-    python notes/labs/01_probabilistic_bc.py --steps 800 --seed 7
+    python robot_learning/labs/01_probabilistic_bc.py --steps 800 --seed 7
 """
 
 from __future__ import annotations

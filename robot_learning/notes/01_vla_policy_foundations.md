@@ -44,7 +44,7 @@ $$
 - $o_t$ ​：机器人当前看到的图像、关节状态等 observation
 - $l$：`"Pick up the red cup"` 这条语言指令
 - $a_t$：专家在这个状态下执行的动作，比如末端执行器位移、关节速度、gripper command
-生成式策略主要处理第一个问题。DAgger、人类干预、在线数据聚合主要处理第二个问题。本地的 [CR-DAgger](../NeurIPS-2025-compliant-residual-dagger-improving-real-world-contact-rich-manipulation-with-human-corrections-Paper-Conference.pdf) 正好用于观察这一区别。
+生成式策略主要处理第一个问题。DAgger、人类干预、在线数据聚合主要处理第二个问题。本地的 [CR-DAgger](../../NeurIPS-2025-compliant-residual-dagger-improving-real-world-contact-rich-manipulation-with-human-corrections-Paper-Conference.pdf) 正好用于观察这一区别。
 
 ## 3. 为什么预测 action chunk
 
@@ -62,7 +62,7 @@ $$
 
 也带来一个关键代价：如果一次预测 50 步并全部开环执行，模型在这 50 步内看不到新的遮挡、接触或卡滞。实际系统通常只执行前 $k\le H$ 步便重规划，或在 chunk 内叠加高频 residual/force controller。
 
-这正是 [ImplicitRDP](../2512.10946v1.pdf)、[FAVLA](../2602.23648v1.pdf) 和 [PhaForce](../2603.08342v1.pdf) 反复解决的问题。它不是“是否使用 Transformer”的问题，而是感知、推理与控制的时间尺度问题。
+这正是 [ImplicitRDP](../../2512.10946v1.pdf)、[FAVLA](../../2602.23648v1.pdf) 和 [PhaForce](../../2603.08342v1.pdf) 反复解决的问题。它不是“是否使用 Transformer”的问题，而是感知、推理与控制的时间尺度问题。
 
 ## 4. 三种动作生成范式
 

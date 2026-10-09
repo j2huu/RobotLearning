@@ -3,7 +3,7 @@
 日期：2026-10-09。由助手运行，用于确认实验可用；不代表学习者已经完成实验验收。
 
 ```bash
-python notes/labs/01_probabilistic_bc.py --steps 800 --seed 7 --output notes/labs/results/lab01_seed7.json
+python robot_learning/labs/01_probabilistic_bc.py --steps 800 --seed 7 --output robot_learning/labs/results/lab01_seed7.json
 ```
 
 运行环境：Python 3.13.11、PyTorch 2.10.0+cu128；本实验使用 CPU 和一个计算线程。

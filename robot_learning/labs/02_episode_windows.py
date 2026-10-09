@@ -2,7 +2,7 @@
 
 This demonstrates data contracts, not a physical robot or a trained policy.
 Run from the paper workspace root:
-    python notes/labs/02_episode_windows.py --output notes/labs/results/lab02_episode_windows.json
+    python robot_learning/labs/02_episode_windows.py --output robot_learning/labs/results/lab02_episode_windows.json
 """
 
 from __future__ import annotations

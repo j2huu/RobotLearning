@@ -2,7 +2,7 @@
 
 本课把第 1–3 课已经接触的 MSE、CVAE、diffusion、flow 和 action policy 放回同一个 ML 框架。重点是学会从“模型学什么分布”推出“为什么使用这个 loss”。
 
-配套实验：[Lab 01](labs/01_probabilistic_bc.py)。课程计划：[第 4–19 课](ROBOT_LEARNING_COURSE_PLAN.md)。概率背景参考 [Probabilistic Machine Learning](https://probml.github.io/pml-book/) 中 conditional probability、maximum likelihood 与 regression 相关主题。
+配套实验：[Lab 01](../labs/01_probabilistic_bc.py)。课程计划：[第 4–19 课](../planning/course_plan.md)。概率背景参考 [Probabilistic Machine Learning](https://probml.github.io/pml-book/) 中 conditional probability、maximum likelihood 与 regression 相关主题。
 
 ## 1. 输入、目标和模型参数
 
@@ -161,7 +161,7 @@ $$
 在工作区根目录运行：
 
 ```bash
-python notes/labs/01_probabilistic_bc.py --steps 800 --seed 7 --output notes/labs/results/lab01_seed7.json
+python robot_learning/labs/01_probabilistic_bc.py --steps 800 --seed 7 --output robot_learning/labs/results/lab01_seed7.json
 ```
 
 合成数据的真实机制是：

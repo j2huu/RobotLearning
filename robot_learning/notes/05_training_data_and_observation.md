@@ -1,6 +1,6 @@
 # 第 5 课：训练、数据与观测——怎样把 demonstration 变成可靠的 policy
 
-上一课：[概率视角的 BC](04_probabilistic_bc_and_training.md)。配套实验：[Lab 02：episode windows](labs/02_episode_windows.py)。
+上一课：[概率视角的 BC](04_probabilistic_bc_and_training.md)。配套实验：[Lab 02：episode windows](../labs/02_episode_windows.py)。
 
 第 4 课解释了模型为什么最小化 MSE/NLL。本课继续问：loss 里的 observation 和 expert action 从哪里来？训练集、mask、时间对齐或 action 定义有错时，优化正确的公式也可能学到错误的行为。
 
@@ -199,7 +199,7 @@ learning rate 过大可能震荡，过小可能训练缓慢。gradient clipping 
 
 查看本地 CR-DAgger 的数据来源与 correction 分布；查看 ImplicitRDP 的 causal force sequence；查看 FP2 的 RFM/force-policy/低层控制接口。
 
-资源列表中的 datasets 与 simulators 用于检查数据和评价覆盖范围，具体入口见 [资源地图](RESOURCE_MAP.md)。[robosuite](https://robosuite.ai/) 提供 robot-learning 仿真和 benchmark；[SimplerEnv](https://github.com/simpler-env/SimplerEnv) 面向 manipulation policy 的 simulation evaluation。第 15 课再选择具体实验 protocol。
+资源列表中的 datasets 与 simulators 用于检查数据和评价覆盖范围，具体入口见 [资源地图](../resources/resource_map.md)。[robosuite](https://robosuite.ai/) 提供 robot-learning 仿真和 benchmark；[SimplerEnv](https://github.com/simpler-env/SimplerEnv) 面向 manipulation policy 的 simulation evaluation。第 15 课再选择具体实验 protocol。
 
 现在重点不是安装所有环境，而是先能写清任何一个环境的 observation、action、controller、reward 与 success definition。
 
@@ -208,7 +208,7 @@ learning rate 过大可能震荡，过小可能训练缓慢。gradient clipping 
 在论文工作区根目录运行：
 
 ```bash
-python notes/labs/02_episode_windows.py --output notes/labs/results/lab02_episode_windows.json
+python robot_learning/labs/02_episode_windows.py --output robot_learning/labs/results/lab02_episode_windows.json
 ```
 
 脚本展示：

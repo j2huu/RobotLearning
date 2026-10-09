@@ -1,6 +1,6 @@
 # 课程资源地图：Robot Learning 与 VLA
 
-查阅日期：2026-10-09。接着 [第 4 课](04_probabilistic_bc_and_training.md) 的课程编号继续学习；目录入口是 [notes/README](README.md)。本页记录两个资源库如何进入课程。
+查阅日期：2026-10-09。接着 [第 4 课](../notes/04_probabilistic_bc_and_training.md) 的课程编号继续学习；目录入口是 [项目 README](../README.md)。本页记录两个资源库如何进入课程。
 
 ## 1. 两个仓库各提供什么
 
@@ -59,4 +59,4 @@ HPT 是 heterogeneous generalist policy 的案例；不能仅因使用 Transform
 
 一个测试语义/视觉泛化的 benchmark 未必能检验瞬时接触调节。力控比较还需报告 wrench error/peaks、contact loss、controller rate 和实际延迟，并控制低层 controller 与数据量。
 
-现在从 [第 5 课](05_training_data_and_observation.md) 接着学，之后沿用 6、7、8……的课号。所有课程、实验和结果都放在 `notes/` 下。
+现在从 [第 5 课](../notes/05_training_data_and_observation.md) 接着学，之后沿用 6、7、8……的课号。课程笔记放在 `robot_learning/notes/`，实验和结果放在同级的 `labs/`，本资源地图归入 `resources/`。

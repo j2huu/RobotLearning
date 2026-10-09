@@ -1,8 +1,19 @@
 # Robot Learning 代码实验
 
-实验配合 [第 4–19 课计划](../ROBOT_LEARNING_COURSE_PLAN.md)。基础实验使用小数据、小模型与可控合成环境；与论文复现区分。每个实验记录配置、seed、数据 split 和评价指标，并写出结果的解释。
+实验配合 [第 4–19 课计划](../planning/course_plan.md)。基础实验使用小数据、小模型与可控合成环境；与论文复现区分。每个实验记录配置、seed、数据 split 和评价指标，并写出结果的解释。
 
 当前已经实现：Lab 01 和 Lab 02 的数据窗口阶段。Lab 02 的 action/frame conversion 在第 13 课扩展；其他条目是后续实现规格。
+
+## 运行位置与结果
+
+下面的命令都从论文工作区根目录 `Paper/` 执行。实验代码在 `robot_learning/labs/`，讲义在同级 `notes/`，运行结果写入本目录的 `results/`。小型 JSON 与实验说明由 Git 跟踪，大型 checkpoint 与运行缓存会被忽略。
+
+| 当前代码 | 对应讲义 | 输出 |
+|---|---|---|
+| [01_probabilistic_bc.py](01_probabilistic_bc.py) | [第 4 课](../notes/04_probabilistic_bc_and_training.md) | `results/lab01_seed7.json` 与运行记录 |
+| [02_episode_windows.py](02_episode_windows.py) | [第 5 课](../notes/05_training_data_and_observation.md) | `results/lab02_episode_windows.json` |
+
+## 后续实验规格
 
 | Lab                    | 课程       | 要实现的机制                                                                                            | 验收                                                                                    |
 | ---------------------- | -------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
@@ -20,7 +31,7 @@
 依赖：Python、PyTorch。CPU 即可运行，没有额外数据或 checkpoint。
 
 ```bash
-python notes/labs/01_probabilistic_bc.py --steps 800 --seed 7 --output notes/labs/results/lab01_seed7.json
+python robot_learning/labs/01_probabilistic_bc.py --steps 800 --seed 7 --output robot_learning/labs/results/lab01_seed7.json
 ```
 
 实验输出包含训练配置、held-out 指标以及 $o=0$ 时的预测分布。没有绘图依赖。脚本的 synthetic episodes 不是物理仿真，mode-compatibility 不是机器人任务成功率。
@@ -43,10 +54,10 @@ Next change:
 ## Lab 02：数据窗口阶段
 
 ```bash
-python notes/labs/02_episode_windows.py --output notes/labs/results/lab02_episode_windows.json
+python robot_learning/labs/02_episode_windows.py --output robot_learning/labs/results/lab02_episode_windows.json
 ```
 
-构造按 episode 划分的 synthetic dataset，进行因果 force 对齐、history/chunk padding、train-only normalization，并检查有效动作的 round trip。讲义见 [第 5 课](../05_training_data_and_observation.md)。本阶段尚未实现图像 preprocessing 或真实 frame conversion。
+构造按 episode 划分的 synthetic dataset，进行因果 force 对齐、history/chunk padding、train-only normalization，并检查有效动作的 round trip。讲义见 [第 5 课](../notes/05_training_data_and_observation.md)。本阶段尚未实现图像 preprocessing 或真实 frame conversion。
 
 ## Capstone：FP2/VLA 接触控制设计
 
