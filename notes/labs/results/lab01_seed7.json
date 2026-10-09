@@ -1,0 +1,130 @@
+{
+  "config": {
+    "seed": 7,
+    "steps": 800,
+    "batch_size": 128,
+    "lr": 0.003,
+    "device": "cpu"
+  },
+  "data": {
+    "n_episodes": 64,
+    "episode_length": 64,
+    "train_episode_ids": [
+      6,
+      7,
+      0,
+      1,
+      62,
+      63,
+      52,
+      53,
+      58,
+      59,
+      38,
+      39,
+      26,
+      27,
+      14,
+      15,
+      36,
+      37,
+      4,
+      5,
+      32,
+      33,
+      12,
+      13,
+      54,
+      55,
+      16,
+      17,
+      30,
+      31,
+      2,
+      3,
+      28,
+      29,
+      46,
+      47,
+      8,
+      9,
+      18,
+      19,
+      48,
+      49,
+      50,
+      51,
+      20,
+      21,
+      10,
+      11
+    ],
+    "validation_episode_ids": [
+      34,
+      35,
+      40,
+      41,
+      42,
+      43,
+      60,
+      61,
+      56,
+      57,
+      24,
+      25,
+      22,
+      23,
+      44,
+      45
+    ],
+    "true_noise_std": 0.05,
+    "observation": "scalar o; branch b is hidden from this single-step policy",
+    "expert_action": "a = 0.5 * o + b + Normal(0, 0.05^2), b in {-1, +1}",
+    "limitation": "Synthetic episode grouping only; no transition dynamics or robot rollout."
+  },
+  "models": {
+    "mse": {
+      "held_out_mean_prediction_mse": 1.0038096904754639,
+      "held_out_nll": null,
+      "sampled_mode_compatibility": 0.0,
+      "mode_compatibility_threshold": 0.15,
+      "sampled_positive_branch_fraction": 0.1519775390625,
+      "distribution_at_o_zero": {
+        "mean": -0.003849528729915619
+      }
+    },
+    "gaussian": {
+      "held_out_mean_prediction_mse": 1.005677580833435,
+      "held_out_nll": 1.421856164932251,
+      "sampled_mode_compatibility": 0.14599609375,
+      "mode_compatibility_threshold": 0.15,
+      "sampled_positive_branch_fraction": 0.48828125,
+      "distribution_at_o_zero": {
+        "mean": -0.024968428537249565,
+        "std": 0.9918878078460693
+      }
+    },
+    "mixture": {
+      "held_out_mean_prediction_mse": 1.007319688796997,
+      "held_out_nll": -0.8822975754737854,
+      "sampled_mode_compatibility": 0.9927978515625,
+      "mode_compatibility_threshold": 0.15,
+      "sampled_positive_branch_fraction": 0.5389404296875,
+      "distribution_at_o_zero": {
+        "weights": [
+          0.4646349847316742,
+          0.5353649854660034
+        ],
+        "means": [
+          -0.9922631978988647,
+          0.9878310561180115
+        ],
+        "stds": [
+          0.05215443670749664,
+          0.05283578485250473
+        ]
+      }
+    }
+  },
+  "metric_note": "Mode compatibility measures closeness to synthetic expert modes, not robot task success."
+}

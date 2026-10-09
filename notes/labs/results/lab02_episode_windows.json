@@ -1,0 +1,127 @@
+{
+  "config": {
+    "observation_horizon": 3,
+    "action_horizon": 4
+  },
+  "data_contract": {
+    "observation": "two synthetic proprio values plus one scalar force; causal availability times",
+    "action": "two synthetic continuous target coordinates, not a real robot action interface",
+    "padding": "repeat-first history with mask; zero action padding with mask",
+    "split": "episode IDs; train and validation only in this teaching example",
+    "limitation": "No physical dynamics, learned policy, frame transforms or robot success evaluation."
+  },
+  "train_episode_ids": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "validation_episode_ids": [
+    4,
+    5
+  ],
+  "n_train_actions_for_statistics": 40,
+  "shapes": {
+    "observation": [
+      40,
+      3,
+      3
+    ],
+    "action": [
+      40,
+      4,
+      2
+    ]
+  },
+  "action_normalization": {
+    "train_mean": [
+      0.8750001192092896,
+      0.38168996572494507
+    ],
+    "train_std": [
+      0.396074503660202,
+      0.2733694314956665
+    ],
+    "all_data_mean_for_comparison_only": [
+      1.0799999237060547,
+      0.380740225315094
+    ],
+    "max_valid_round_trip_error": 5.960464477539063e-08
+  },
+  "invalid_history_slots": 12,
+  "invalid_action_slots": 24,
+  "force_age_seconds": {
+    "min": 0.014999999999999902,
+    "max": 0.015000000000000013
+  },
+  "future_force_sample_count": 0,
+  "masked_normalized_mse_of_zero_prediction": 0.8873966336250305,
+  "boundary_examples": [
+    {
+      "episode_id": 0,
+      "step": 0,
+      "observation_mask": [
+        false,
+        false,
+        true
+      ],
+      "action_mask": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "action_chunk": [
+        [
+          0.10000000149011612,
+          -0.05000000074505806
+        ],
+        [
+          0.20000000298023224,
+          0.04983341321349144
+        ],
+        [
+          0.30000001192092896,
+          0.14866933226585388
+        ],
+        [
+          0.4000000059604645,
+          0.24552021920681
+        ]
+      ]
+    },
+    {
+      "episode_id": 3,
+      "step": 10,
+      "observation_mask": [
+        true,
+        true,
+        true
+      ],
+      "action_mask": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "action_chunk": [
+        [
+          1.7000000476837158,
+          0.7914709448814392
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ]
+    }
+  ]
+}

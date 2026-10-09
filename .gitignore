@@ -1,0 +1,27 @@
+# Temporary extraction files and caches
+/tmp/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.cache/
+.ipynb_checkpoints/
+
+# Local environments and editor state
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+**/.obsidian/
+.DS_Store
+
+# Large training artifacts; small teaching results remain versioned
+checkpoints/
+wandb/
+runs/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
