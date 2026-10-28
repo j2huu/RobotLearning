@@ -1,0 +1,132 @@
+<div id="fp2-compression-view">
+  <div class="viz-controls" aria-label="数据流步骤">
+    <button class="btn" type="button" data-step="0" aria-pressed="true">1 · 投影</button>
+    <button class="btn" type="button" data-step="1" aria-pressed="false">2 · 汇聚</button>
+    <button class="btn" type="button" data-step="2" aria-pressed="false">3 · 重建训练</button>
+    <button class="btn" type="button" data-step="3" aria-pressed="false">4 · 力觉融合</button>
+  </div>
+  <div class="fp2-figure" aria-live="off"></div>
+  <div class="text-small" data-detail aria-live="polite"></div>
+  <style>
+    #fp2-compression-view { color: var(--foreground); }
+    #fp2-compression-view .fp2-figure { width: 100%; margin: 12px 0; }
+    #fp2-compression-view .fp2-svg { display: block; width: 100%; overflow: visible; }
+    #fp2-compression-view .fp2-svg text { fill: var(--foreground); }
+    #fp2-compression-view .fp2-svg .outline { stroke: var(--border); fill: none; }
+    #fp2-compression-view .fp2-svg .flow { stroke: var(--foreground); fill: none; }
+    #fp2-compression-view .fp2-svg .token { fill: var(--viz-series-1); fill-opacity: .24; }
+    #fp2-compression-view .fp2-svg .latent { fill: var(--viz-series-2); fill-opacity: .30; }
+    #fp2-compression-view .fp2-svg .query { fill: var(--viz-series-3); fill-opacity: .27; }
+    #fp2-compression-view .fp2-svg .feedback { fill: var(--viz-series-4); fill-opacity: .26; }
+  </style>
+  <script>
+  (() => {
+    const root = document.getElementById('fp2-compression-view');
+    const figure = root.querySelector('.fp2-figure');
+    const detail = root.querySelector('[data-detail]');
+    const buttons = [...root.querySelectorAll('[data-step]')];
+    const namespace = 'http://www.w3.org/2000/svg';
+    let step = 0;
+    const stages = [
+      { title: '逐 token 投影', note: 'token 数 N 不变；每个 token 的宽度 D → d。', left: ['上下文 C', 'N × D'], right: ['投影 X', 'N × d'] },
+      { title: '一个 query 汇聚多个 token', note: 'Q 是可学习参数；此处没有 wrench 输入。', left: ['投影 X → K、V', 'N × d'], right: ['压缩 token z', '1 × d'] },
+      { title: '仅在训练时展开重建', note: '重建目标是 C；部署时丢弃 decoder，保留 z。', left: ['压缩 token z', '1 × d'], right: ['重建上下文 Ĉ', 'N × D'] },
+      { title: '部署：缓存上下文与实时反馈汇合', note: 'πF 输出 frame、mask、desired wrench；action 另走 RFM 支路。', left: ['缓存 z + W/P 历史', '1 × d + L × (6 + dP)'], right: ['结构化控制参数', 'Σ、s、W_ref'] }
+    ];
+    function element(tag, attrs, parent, value) {
+      const node = document.createElementNS(namespace, tag);
+      Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, String(v)));
+      if (value !== undefined) node.textContent = value;
+      parent.appendChild(node);
+      return node;
+    }
+    function render() {
+      const width = Math.max(280, Math.round(figure.getBoundingClientRect().width || 700));
+      const narrow = width < 530;
+      const height = narrow ? (step === 3 ? 458 : 430) : 295;
+      figure.replaceChildren();
+      const svg = element('svg', { class: 'fp2-svg', viewBox: `0 0 ${width} ${height}`, role: 'img', 'aria-label': stages[step].title }, figure);
+      element('title', {}, svg, stages[step].title);
+      element('desc', {}, svg, stages[step].note + ' 图中方块仅表示 token，数量为示意。省略 batch 维。');
+      const defs = element('defs', {}, svg);
+      const marker = element('marker', { id: 'fp2-flow-tip', viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 6, markerHeight: 6, orient: 'auto' }, defs);
+      element('path', { d: 'M 0 0 L 10 5 L 0 10 z', fill: 'var(--foreground)' }, marker);
+      const label = (x, y, text, anchor = 'middle') => element('text', { x, y, 'text-anchor': anchor }, svg, text);
+      label(8, 22, stages[step].title, 'start');
+      const a = narrow ? {x: width / 2, y: 92} : {x: width * .23, y: 125};
+      const b = narrow ? {x: width / 2, y: 300} : {x: width * .77, y: 125};
+      const groupWidth = narrow ? Math.min(230, width - 24) : Math.min(220, width * .36);
+      const tokens = (center, count, kind, wide) => {
+        const cellWidth = typeof wide === 'number' ? wide : (wide ? groupWidth : Math.min(groupWidth, 120));
+        const cellHeight = count === 1 ? 32 : 12;
+        const gap = 5;
+        const blockHeight = count * cellHeight + (count - 1) * gap;
+        for (let index = 0; index < count; index++) {
+          const y = center.y - blockHeight / 2 + index * (cellHeight + gap);
+          element('rect', { x: center.x - cellWidth / 2, y, width: cellWidth, height: cellHeight, rx: 4, class: kind }, svg);
+          for (let j = 1; j < 4; j++) element('path', { d: `M ${center.x-cellWidth/2+cellWidth*j/4} ${y+3} v ${cellHeight-6}`, class: 'outline' }, svg);
+        }
+      };
+      const arrow = (from, to) => element('path', { d: `M ${from.x} ${from.y} L ${to.x} ${to.y}`, class: 'flow', 'stroke-width': 1.5, 'marker-end': 'url(#fp2-flow-tip)' }, svg);
+      if (step === 0) {
+        tokens(a, 5, 'token', true);
+        tokens(b, 5, 'token', false);
+      } else if (step === 1) {
+        tokens(a, 5, 'token', true);
+        tokens(b, 1, 'latent', true);
+        const q = narrow ? {x: width * .75, y: 220} : {x: width / 2, y: 73};
+        element('rect', { x: q.x-46, y: q.y-18, width: 92, height: 28, rx: 4, class: 'query' }, svg);
+        label(q.x, q.y+1, 'Q · 1 × d');
+      } else if (step === 2) {
+        tokens(a, 1, 'latent', true);
+        tokens(b, 5, 'token', true);
+      } else {
+        tokens({x:a.x, y:a.y-22}, 1, 'latent', true);
+        tokens({x:a.x-groupWidth*.25, y:a.y+28}, 3, 'feedback', groupWidth*.42);
+        tokens({x:a.x+groupWidth*.25, y:a.y+28}, 3, 'token', groupWidth*.42);
+        const labels = ['Σ · interaction frame', 's · 6 个轴', 'W_ref · 6 维'];
+        labels.forEach((text, index) => {
+          const y = b.y-42+index*39;
+          element('rect', { x:b.x-groupWidth/2, y, width:groupWidth, height:30, rx:4, class:'outline' }, svg);
+          label(b.x, y+20, text);
+        });
+      }
+      if (narrow) {
+        arrow({x: width/2, y: step === 3 ? 225 : 209}, {x: width/2, y: 244});
+      } else {
+        arrow({x: a.x+groupWidth/2+8, y:a.y}, {x:b.x-groupWidth/2-10, y:b.y});
+      }
+      const labelYOffset = step === 3 ? 92 : 70;
+      stages[step].left.forEach((text,index)=>label(a.x,a.y+labelYOffset+index*24,text));
+      stages[step].right.forEach((text,index)=>label(b.x,b.y+labelYOffset+index*24,text));
+      if (!narrow) {
+        const action = ['Proj', 'Cross-attn', 'Decoder', 'πF'][step];
+        label(width/2, 156, action);
+      }
+      label(8, height-8, '形状省略 batch；方块数量为示意。', 'start');
+      detail.textContent = stages[step].note;
+      buttons.forEach(button=>button.setAttribute('aria-pressed',String(Number(button.dataset.step)===step)));
+    }
+    function applySaved(value) {
+      const saved = value && value.privateContent && value.privateContent.step;
+      if (Number.isInteger(saved) && saved>=0 && saved<stages.length) step=saved;
+    }
+    applySaved(window.openai && window.openai.widgetState);
+    buttons.forEach(button=>button.addEventListener('click',()=>{
+      step=Number(button.dataset.step);
+      render();
+      if (window.openai && window.openai.setWidgetState) {
+        window.openai.setWidgetState({modelContent:{fp2_view:stages[step].title},privateContent:{step}}).catch(()=>{});
+      }
+    }));
+    window.addEventListener('openai:set_globals',event=>{
+      if (event.detail && event.detail.globals && event.detail.globals.widgetState) {
+        applySaved(event.detail.globals.widgetState);
+        render();
+      }
+    });
+    new ResizeObserver(render).observe(figure);
+    render();
+  })();
+  </script>
+</div>
