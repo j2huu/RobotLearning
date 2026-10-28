@@ -1,10 +1,16 @@
 # Robot Learning 后续课程：第 4–19 课
 
+2026-10-21 当前执行顺序：按 [VLA循序学习路线](vla_learning_path.md)，将第6–15课拆成6A–15C共30个单元，从 [第6课6A](../notes/06_multimodal_policy_representation.md) 继续。用户希望更细致理解，因此本页原八周表作为课程覆盖范围参考，不要求在一周内赶完两篇密集讲义。每单元约45–75分钟，实验与复盘另留时间，以独立解释和推导决定进度。
+
+ML题型已阅读，当前以 [VLA面试练习册](../notes/vla_interview_workbook.md) 练本课的机制、tensor、系统边界与证据。M1–M10作为知识缺口索引，Pi专题在第11/12课查阅；当前 [11份Colab notebook](../labs/notebooks/README.md) 按学习路线分段使用，实际云端运行待记录。
+
 制定日期：2026-10-09。学习投入：每周 8–10 小时。沿用已经学习的第 1–3 课，不重新从头开始。
+
+2026-10-17 补充：先提供 [Pi 系列独立专题 P1–P6](../notes/pi_series/README.md)，不接续第 05 课号。本计划的第 6–19 课保留；专题覆盖第 9/11/12 课的部分知识与第 10/13/15/19 课的工程内容，之后按验收复用产出。岗位能力与证据要求见 [求职能力地图](../resources/vla_job_competency_map.md)。
 
 本文件是接下来的执行计划；[VLA 与 π 系列路线](../resources/vla_pi_roadmap.md) 保留为主题参考。课程按知识依赖排序，以本地论文做案例，以小实验检查理解，以英文口述连接实习和面试。
 
-目录约定：学习项目位于 `robot_learning/`，讲义在 `notes/`，代码在 `labs/`，计划与进度在 `planning/`，论文索引与参考资源在 `resources/`。项目 README 提供入口。第 4 课保留原编号，当前从 [第 5 课](../notes/05_training_data_and_observation.md) 接着准备，后续沿用第 6–19 课。
+目录约定：学习项目位于 `robot_learning/`，讲义在 `notes/`，代码在 `labs/`，Colab 文件在 `labs/notebooks/`，计划与进度在 `planning/`，论文索引与参考资源在 `resources/`。第 4–19 课保留原编号；Pi 使用 P 编号，ML 面试补强使用 M 编号。
 
 参考用户提供的两个仓库后，补入 dataset/benchmark/simulation、异构 policy pretraining 和动作 tokenization 的对照；映射见 [资源地图](../resources/resource_map.md)。
 
@@ -12,7 +18,7 @@
 
 已经讲解过：BC、多峰动作、action chunk、ACT/CVAE、DP/flow/FAST 的基本差别、RDP/ImplicitRDP、Force Policy、FP2、twist–wrench 和混合力位控制。这些内容已接触，不等于已通过独立推导或实验验收。
 
-当前 22 篇本地论文集中于力觉、顺应控制、多模态与 force-aware VLA。下一阶段重点补齐支撑它们的概率建模、神经网络优化、序列建模、RL、模型学习、数据工程和实验评估。
+当前 24 篇本地论文中，原 22 篇集中于力觉、顺应控制、多模态与 force-aware VLA，新增 2 篇 π0 / π0.5 补通用策略主干。下一阶段继续补齐概率建模、神经网络优化、序列建模、RL、模型学习、数据工程和实验评估。
 
 结束时应能独立完成：
 
@@ -49,13 +55,13 @@ CVAE / diffusion / flow ──→ VLM → VLA → π0 / FAST / π0.5
 | 活动 | 时间 | 固定产出 |
 |---|---:|---|
 | 两次课程 | 3 小时 | 一次重理论/推导，一次重论文与系统 |
-| 代码实验 | 3–4 小时 | 可运行脚本、配置、指标、观察与解释 |
+| 代码实验 | 3–4 小时 | Colab notebook、配置、指标、图表、观察与解释 |
 | 定向阅读 | 1–2 小时 | 一篇主读；第二篇只查对照章节 |
 | 英文复盘与面试 | 1 小时 | 90 秒定义、5 分钟架构说明、一次追问 |
 
 建议把两次课程间隔 2–3 天。时间不足时先完成本周主实验和验收，把选读后移。某一项验收未通过时，在下次课前用 20–30 分钟补做，不重复整篇论文。
 
-## 4. 八周课程表
+## 4. 原八周课程覆盖表（当前按小单元推进）
 
 | 周 | 两次课程 | ML 背景与关键问题 | 主读/对照 | 本周代码产出 |
 |---|---|---|---|---|
@@ -78,7 +84,7 @@ CVAE / diffusion / flow ──→ VLM → VLA → π0 / FAST / π0.5
 |---|---|
 | 4 | 推导 MSE 对应固定方差 Gaussian NLL；解释 conditional mean 为何可能不是专家动作；说清 μ/σ/I 与条件 |
 | 5 | 定义 state/observation/history；解释 frame split 泄漏；正确处理 timestamps、训练集统计和 padding mask |
-| 6 | 提出证明 force 有用的消融；区分 reconstruction、contrastive 与 policy objective；解释力觉 shortcut |
+| 6 | 手算RGB/text/state到tokens；区分sequence/hidden/native维度；说明统一宽度与模态利用证据 |
 | 7 | 算出 attention 中每个 tensor 的 shape；画 causal mask；说明 cache 的有效期与 stale context |
 | 8 | 写出 CVAE reconstruction+KL 和 diffusion noise-prediction loss；说明训练/推理的信息差异 |
 | 9 | 推导线性路径 velocity target；手算一次 Euler step；说明积分步数与反馈频率是两个问题 |
@@ -108,11 +114,11 @@ Lab 07: interactive data / return / offline support
 Lab 08: learned dynamics + planning
 ```
 
-详细实现规格见 [实验说明](../labs/README.md)。[概率 BC 实验](../labs/01_probabilistic_bc.py) 和 [episode 数据窗口实验](../labs/02_episode_windows.py) 已可运行。Lab 02 的 frame/action conversion 与其余实验按课程顺序实现。
+详细实现规格见 [实验说明](../labs/README.md)。优先使用 [概率 BC notebook](../labs/notebooks/Lab01_probabilistic_bc.ipynb)、[episode 数据窗口 notebook](../labs/notebooks/Lab02_episode_windows.ipynb) 与 [Pi 机制 notebook](../labs/notebooks/Pi_mechanisms.ipynb)。旧脚本保留。新增 ML01–ML06 提供独立的小实验，其中 ML05/ML06 可为主线 Lab03/Lab04 的部分机制练习提供材料，但不表示原规格的全部实验已完成。Lab02 的真实 frame/action conversion 与其他未实现项目按课序继续。
 
 所有实验先记录 seed、数据生成方式、split 和指标。先使小 batch/小环境工作，再扩展容量。toy result 只支持对应机制的结论，不声称复现论文的机器人成功率。
 
-本机已检查：Python 3.13、NumPy、PyTorch 可用，CUDA 可用。大型模型的可运行性仍需确认显存、依赖、checkpoint 和具体配置。每个实验都有不依赖完整 foundation checkpoint 的基础验收；全模型 inference/fine-tuning 作为资源允许时的扩展。
+2026-10-09 的 Lab 01 运行环境记录为 Python 3.13 / PyTorch CUDA build，见 [历史运行记录](../labs/results/lab01_run_notes.md)；不能据此推断当前 checkout 所在机器具有 CUDA 或相同依赖。大型模型运行前需重新确认硬件、依赖、checkpoint 和配置。本次新增的 Pi 机制实验仅依赖 Python 标准库；全模型 inference/fine-tuning 作为资源允许时的扩展。
 
 ## 7. 本地论文的使用方式
 
@@ -128,7 +134,7 @@ Lab 08: learned dynamics + planning
 
 ## 8. 需要补充的主干资料
 
-以下材料已核对原始论文或官方项目入口；目前列为外部阅读，尚未下载到本地论文库。
+以下材料列出原始论文或官方项目入口；除已注明的 π0 / π0.5 外，其余为外部阅读。
 
 | 资料 | 用途 | 阅读深度 |
 |---|---|---|
@@ -138,7 +144,7 @@ Lab 08: learned dynamics + planning
 | [Diffusion Policy](https://diffusion-policy.cs.columbia.edu/) | continuous action generation 与 receding-horizon deployment | 第 8 课主干精读 |
 | [Flow Matching](https://arxiv.org/abs/2210.02747) | 路径、velocity field、ODE | 第 9 课数学部分 |
 | [Open X](https://robotics-transformer-x.github.io/) / [Octo](https://octo-models.github.io/) / [OpenVLA](https://openvla.github.io/) | 数据接口、generalist policy、VLM→action | 第 10 课比较阅读 |
-| [π0](https://arxiv.org/abs/2410.24164) / [FAST](https://arxiv.org/abs/2501.09747) / [π0.5](https://arxiv.org/abs/2504.16054) | VLA 主干 | 第 11–12 课指定章节 |
+| [本地 π0 v1](../../paper/2410.24164v1.pdf) / [FAST](https://arxiv.org/abs/2501.09747) / [本地 π0.5 v1](../../paper/2504.16054v1.pdf) | VLA 主干；两篇 Pi 原文已入库 | 独立 P1–P4；主线 11–12 复用 |
 | [DAgger](https://proceedings.mlr.press/v15/ross11a.html) | on-policy state distribution 与 expert relabeling | 第 17 课方法部分 |
 | [openpi](https://github.com/Physical-Intelligence/openpi) | 公式到真实数据/代码接口 | 第 4 周起固定版本追踪 |
 
@@ -146,10 +152,31 @@ Lab 08: learned dynamics + planning
 
 使用 [学习记录](progress.md) 保存每课产出与未解决问题。主讲以中文解释并保留英文术语；每周英文口述围绕三个层级：
 
+分课练习与参考要点统一见 [VLA面试练习册](../notes/vla_interview_workbook.md)，当天短答、下次手推、每阶段做迁移追问，避免仅按阅读篇数推进。
+
 1. 90 秒：定义概念与核心问题。
 2. 5 分钟：解释输入、输出、loss、inference 和 controller。
 3. 追问：给出证据、消融、失败边界和自己的贡献。
 
 最终 FP2 capstone 包括：完整框图、2/50/1000 Hz 时序、compressor 训练、twist–wrench/frame/mask、五组消融和两个失败案例。自己的实习贡献以实际参与记录为依据，避免把团队整体结果描述为个人独立实现。
 
-继续：[第 5 课：训练、数据与观测](../notes/05_training_data_and_observation.md)。第 4 课的概率推导和 Lab 01 作为前置内容保留。
+当前继续：[第5课](../notes/05_training_data_and_observation.md) → [第6课](../notes/06_multimodal_policy_representation.md) → [第7课](../notes/07_policy_transformer_and_causality.md) → [第8课](../notes/08_cvae_and_diffusion_policy.md) → [第9课](../notes/09_flow_matching_for_actions.md) → [第10课](../notes/10_from_vlm_to_vla.md) → [第11课](../notes/11_pi0_policy_system.md) → [第12课](../notes/12_fast_and_pi05.md) → [第13课](../notes/13_action_and_control_interfaces.md) → [第14课](../notes/14_force_aware_adaptation.md) → [第15课](../notes/15_vla_evaluation_and_generalization.md)。RL/offline RL/dynamics的第16–19课继续后续准备。
+
+## 10. 追加：ML 面试补强与 Colab 路线
+
+主线不重新编号。以下各课的实际讲义已在 [M1–M10](../notes/ml_interview/README.md) 提供，代码集中到 [Colab](../labs/notebooks/README.md)。
+
+| 课 | 知识 | 对应主线 | 必须产出 |
+|---|---|---|---|
+| M1 | 概率、MLE/MAP、NLL、bias/variance | 4/8/9 | Gaussian→MSE 与 logistic gradient 的手推 |
+| M2 | 线性/逻辑回归、L1/L2、缩放与阈值 | 4/15 | ML01 的梯度核对与 validation 选择 |
+| M3 | KNN/SVM/tree/RF/boosting | 15 | 公平 baseline 表与模型取舍 |
+| M4 | tensor、backprop、autograd、masked loss | 7/11/19 | shape trace、CE gradient、broadcast 反例 |
+| M5 | SGD/AdamW、初始化、BN/LN、诊断 | 4/14/19 | 训练曲线、grad/parameter 更新检查 |
+| M6 | leakage、group split、PR/ROC、校准、CI | 5/15 | 阈值与 test 隔离、group-ID 反例 |
+| M7 | PCA/SVD、聚类、AE/contrastive | 6 | 低方差任务信号反例与表示评价 |
+| M8 | attention、mask、cache、compressor | 7/14 | Q/K/V shapes、因果扰动与冻结图 |
+| M9 | CVAE/diffusion/flow | 8/9 | ML06 学习采样实验与目标/时间约定 |
+| M10 | transfer、LoRA、系统题 | 14/19 | LoRA 参数/梯度检查与英文方案 |
+
+ML专项冲刺参考：M1/M2→M4/M5→M6；7天路线见专题入口。2026-10-21起当前任务转回VLA主线，以上ML材料仅在推导或面试复盘时按需查阅。Notebook实际运行、指标和口述记录仍单独填写。

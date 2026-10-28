@@ -1,6 +1,10 @@
 # 课程资源地图：Robot Learning 与 VLA
 
-查阅日期：2026-10-09。接着 [第 4 课](../notes/04_probabilistic_bc_and_training.md) 的课程编号继续学习；目录入口是 [项目 README](../README.md)。本页记录两个资源库如何进入课程。
+2026-10-21：当前按 [VLA循序路线](../planning/vla_learning_path.md) 从6A开始，主线6–15课分成30个小单元。本页用于查资料，日常学习按当前单元选读；OpenVLA/Octo/ACT/DP按原始版本作架构对照，Pi专题在第11/12课深入，ML按需查缺。Colab教学实验尚无云端运行证据。
+
+[ML面试M1–M10](../notes/ml_interview/README.md) 包含CS229/PML、PyTorch与sklearn的定向参考；当前面试训练使用 [VLA场景练习](../notes/vla_interview_workbook.md)，已读ML题型无需重新通刷。
+
+原资源查阅日期：2026-10-09。2026-10-17 补充：[Pi 独立专题](../notes/pi_series/README.md) 已提供 π0 / π0.5 全文讲义和固定版本代码阅读；[岗位能力地图](vla_job_competency_map.md) 将课程连接到工程求职。原连续课号保留，本页记录两个资源库如何进入主线课程。
 
 ## 1. 两个仓库各提供什么
 
@@ -59,4 +63,4 @@ HPT 是 heterogeneous generalist policy 的案例；不能仅因使用 Transform
 
 一个测试语义/视觉泛化的 benchmark 未必能检验瞬时接触调节。力控比较还需报告 wrench error/peaks、contact loss、controller rate 和实际延迟，并控制低层 controller 与数据量。
 
-现在从 [第 5 课](../notes/05_training_data_and_observation.md) 接着学，之后沿用 6、7、8……的课号。课程笔记放在 `robot_learning/notes/`，实验和结果放在同级的 `labs/`，本资源地图归入 `resources/`。
+在 [第5课](../notes/05_training_data_and_observation.md) 之后先进入6A，Pi材料在第11/12课衔接。课程笔记放在 `robot_learning/notes/`，实验和结果放在同级的 `labs/`，本资源地图归入 `resources/`。
