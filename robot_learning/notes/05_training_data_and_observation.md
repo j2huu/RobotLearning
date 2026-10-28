@@ -1,6 +1,6 @@
 # 第 5 课：训练、数据与观测——怎样把 demonstration 变成可靠的 policy
 
-上一课：[概率视角的 BC](04_probabilistic_bc_and_training.md)。配套实验：[Lab 02：episode windows](../labs/02_episode_windows.py)。
+上一课：[概率视角的 BC](04_probabilistic_bc_and_training.md)。配套实验：[Colab Lab02：episode windows](../labs/notebooks/Lab02_episode_windows.ipynb)，直接上传运行；[原脚本](../labs/02_episode_windows.py) 保留为历史入口。
 
 第 4 课解释了模型为什么最小化 MSE/NLL。本课继续问：loss 里的 observation 和 expert action 从哪里来？训练集、mask、时间对齐或 action 定义有错时，优化正确的公式也可能学到错误的行为。
 
@@ -142,8 +142,8 @@ observation: [o_(t-2), o_(t-1), o_t]
 action:      [a_t, a_(t+1), a_(t+2), a_(t+3)]
 ```
 
-开头没有足够 history，末尾没有完整 action chunk。可以丢弃边界样本，或明确 padding 并提供 mask。
-
+开头没有足够 history，末尾没有完整 action chunk。可以丢弃边界样本，或明确 padding 并提供 mask。对于t = 3，$A_3=[a_3,a_4,a_5,a_6]$, 没有提供$a_5, a_6$，所以需要padding，也即是$m = [1, 1, 0, 0]$，padding的Action不参与Loss。
+ 
 本实验 history 在开头重复首帧并提供 observation mask，action 在末尾填零并提供 action mask。窗口始终从一个 episode 取数据，不能跨到下一个任务。
 
 masked action loss 示例：
@@ -153,6 +153,17 @@ $$
 =\frac{\sum_{b,h,j}m_{b,h}\,\ell(\hat a_{b,h,j},a_{b,h,j})}
 {d_a\sum_{b,h}m_{b,h}}.
 $$
+
+| 符号               | 含义                         |
+| ---------------- | -------------------------- |
+| $b$              | Batch 中第 \(b\) 个样本         |
+| $h$              | Action Chunk 中第 \(h\) 个时间步 |
+| $j$              | Action 的第 \(j\) 个维度        |
+| $\hat a_{b,h,j}$ | 模型预测的 Action               |
+| $a_{b,h,j}$      | Demonstration 中的真实 Action  |
+| $m_{b,h}$        | Mask，决定该时间步是否有效            |
+| $d_a$            | Action Dimension，例如 7      |
+| $\ell$           | 单个 Action 分量的误差函数          |
 
 分母只计有效元素。masked padding 不参与 loss 或训练统计；attention 是否屏蔽 padding 则由模型另外处理，单有 loss mask 并不够。
 
@@ -205,13 +216,9 @@ learning rate 过大可能震荡，过小可能训练缓慢。gradient clipping 
 
 ## 11. Lab 02：从 episode 到 batch
 
-在论文工作区根目录运行：
+上传 [Lab02 notebook](../labs/notebooks/Lab02_episode_windows.ipynb) 到Colab，从第一个cell顺序运行。所需数据与函数已内嵌，不要求安装本地环境；[旧脚本](../labs/02_episode_windows.py) 仅作来源参考。
 
-```bash
-python robot_learning/labs/02_episode_windows.py --output robot_learning/labs/results/lab02_episode_windows.json
-```
-
-脚本展示：
+Notebook展示：
 
 1. 按 episode 分 train/validation。
 2. 为每个 control step 查找最新可用的 force。
@@ -224,7 +231,7 @@ python robot_learning/labs/02_episode_windows.py --output robot_learning/labs/re
 
 ## 12. 检查题与英文口述
 
-1. 完整环境 state、robot proprioception 和 observation 有什么不同？
+1. 完整环境 state、robot proprioception 和 observation 有什么不同？A: $P \subseteq O \subseteq S$  
 2. 同一图片对应两个动作时，应该先检查哪些遗漏条件？
 3. 为什么随机 frame split 不能证明跨 episode 泛化？
 4. force 的 acquisition timestamp 与 arrival timestamp 为什么需要区分？
@@ -237,4 +244,4 @@ python robot_learning/labs/02_episode_windows.py --output robot_learning/labs/re
 
 > Walk me through converting robot demonstrations into training batches. Explain the observation/action contract, causal sensor alignment, episode split, normalization, padding masks, and the gap between offline prediction error and closed-loop success.
 
-下一课：**第 6 课：多模态表示学习**——为什么图像与力拼在一起，模型仍可能忽略 force？
+下一步先看 [循序学习路线](../planning/vla_learning_path.md)，再进入 [第6课6A：像素到token](06_multimodal_policy_representation.md)。从本课的数据contract继续，先手算RGB到patch embeddings，再逐步加入语言、state与融合；按一个小单元推进。

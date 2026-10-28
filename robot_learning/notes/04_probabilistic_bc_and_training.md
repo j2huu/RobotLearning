@@ -2,7 +2,7 @@
 
 本课把第 1–3 课已经接触的 MSE、CVAE、diffusion、flow 和 action policy 放回同一个 ML 框架。重点是学会从“模型学什么分布”推出“为什么使用这个 loss”。
 
-配套实验：[Lab 01](../labs/01_probabilistic_bc.py)。课程计划：[第 4–19 课](../planning/course_plan.md)。概率背景参考 [Probabilistic Machine Learning](https://probml.github.io/pml-book/) 中 conditional probability、maximum likelihood 与 regression 相关主题。
+配套实验：[Colab Lab01](../labs/notebooks/Lab01_probabilistic_bc.ipynb)，不需要本地环境；[原脚本](../labs/01_probabilistic_bc.py) 保留为历史入口。课程计划：[第 4–19 课](../planning/course_plan.md)，基础补强：[ML 面试专题](ml_interview/README.md)。概率背景参考 [Probabilistic Machine Learning](https://probml.github.io/pml-book/) 中 conditional probability、maximum likelihood 与 regression 相关主题。
 
 ## 1. 输入、目标和模型参数
 
@@ -157,6 +157,8 @@ $$
 下一课深入 Adam、learning rate、regularization、batch、gradient clipping、train/eval mode、overfitting 和数据质量。首先验证 shape、units、mask 与 split，再把模型容量作为诊断方向。
 
 ## 8. 本课实验
+
+优先上传 [Lab01 notebook](../labs/notebooks/Lab01_probabilistic_bc.ipynb) 到 Colab 从上到下运行，含采样图和可修改参数。下面命令仅保留为旧脚本说明，不要求本机执行。
 
 在工作区根目录运行：
 
