@@ -1,0 +1,157 @@
+{
+  "config": {
+    "seed": 7,
+    "steps": 10,
+    "dependencies": "Python 3.9+ standard library"
+  },
+  "flow": {
+    "conceptual_tensor_shape": [
+      2,
+      4,
+      3
+    ],
+    "finite_difference_max_error": 1.5928747210125493e-10,
+    "forward_endpoint_max_error": 8.881784197001252e-16,
+    "reverse_endpoint_max_error": 8.881784197001252e-16,
+    "convention_max_difference": 0.0,
+    "wrong_sign_endpoint_max_error": 6.896475321809963,
+    "limitation": "Known endpoints and constant oracle velocity; no learned generative policy."
+  },
+  "attention": {
+    "token_order": [
+      "P0",
+      "P1",
+      "D0",
+      "D1",
+      "C0",
+      "C1",
+      "padding"
+    ],
+    "correct_mask": [
+      [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      [
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "correct_two_layer_action_delta": 0.0,
+    "leaky_one_layer_action_delta": 0.0,
+    "leaky_two_layer_action_delta": 0.33867063309251155,
+    "padding_perturbation_action_delta": 0.0,
+    "future_FAST_perturbation_past_FAST_delta": 0.0,
+    "limitation": "Hand-built identity Q/K/V attention; no trained Transformer or gradient routing test."
+  },
+  "delay": {
+    "cases": [
+      {
+        "latency_ms": 0,
+        "action_hz": 50,
+        "execute_steps": 10,
+        "horizon": 50,
+        "execution_window_ms": 200.0,
+        "async_budget_margin_ms_ignoring_other_overheads": 200.0,
+        "elapsed_action_intervals_at_arrival": 0,
+        "remaining_waypoints_after_elapsed_prefix": 50,
+        "synchronous_cycle_ms": 200.0,
+        "assumption": "Observation at time zero; inference overlaps execution only in async budget calculation; zero other overhead."
+      },
+      {
+        "latency_ms": 120,
+        "action_hz": 50,
+        "execute_steps": 10,
+        "horizon": 50,
+        "execution_window_ms": 200.0,
+        "async_budget_margin_ms_ignoring_other_overheads": 80.0,
+        "elapsed_action_intervals_at_arrival": 6,
+        "remaining_waypoints_after_elapsed_prefix": 44,
+        "synchronous_cycle_ms": 320.0,
+        "assumption": "Observation at time zero; inference overlaps execution only in async budget calculation; zero other overhead."
+      },
+      {
+        "latency_ms": 260,
+        "action_hz": 50,
+        "execute_steps": 10,
+        "horizon": 50,
+        "execution_window_ms": 200.0,
+        "async_budget_margin_ms_ignoring_other_overheads": -60.0,
+        "elapsed_action_intervals_at_arrival": 13,
+        "remaining_waypoints_after_elapsed_prefix": 37,
+        "synchronous_cycle_ms": 460.0,
+        "assumption": "Observation at time zero; inference overlaps execution only in async budget calculation; zero other overhead."
+      },
+      {
+        "latency_ms": 1200,
+        "action_hz": 50,
+        "execute_steps": 10,
+        "horizon": 50,
+        "execution_window_ms": 200.0,
+        "async_budget_margin_ms_ignoring_other_overheads": -1000.0,
+        "elapsed_action_intervals_at_arrival": 60,
+        "remaining_waypoints_after_elapsed_prefix": 0,
+        "synchronous_cycle_ms": 1400.0,
+        "assumption": "Observation at time zero; inference overlaps execution only in async budget calculation; zero other overhead."
+      }
+    ],
+    "limitation": "Clock arithmetic, not a scheduler, physical simulation, or recommendation to blindly discard contact actions."
+  },
+  "all_checks_passed": true,
+  "scope": "Mechanism checks only. No policy training, checkpoint, robot rollout, or paper success-rate reproduction."
+}

@@ -1,6 +1,6 @@
 # VLA 与 π 系列系统学习路线
 
-2026-10-09 更新：完成前 3 课的讲解后，当前按 [第 4–19 课执行计划](../planning/course_plan.md) 推进，每周 8–10 小时，补概率/优化、表示、RL、模型学习与代码实验。本文件保留为 VLA 主题地图；具体课号、节奏和验收以执行计划为准。
+2026-10-17 更新：新增本地 π0 / π0.5 后，已建立 [Pi 独立专题 P1–P6](../notes/pi_series/README.md)，可在原第 1–5 课基础上学习，不接续第 05 课号。原 [第 4–19 课计划](../planning/course_plan.md) 保留；专题与主线重叠内容复用产出。本文件是概念地图，具体阅读与实现版本以专题讲义为准。求职目标见 [岗位能力地图](vla_job_competency_map.md)。
 
 ## 目标
 
@@ -107,7 +107,7 @@ $$
 
 得到 $a^1$。这里的 $c$ 不是一个抽象标签，而是图像、语言和机器人状态经过模型得到的条件表示。
 
-精读：[π0 论文](https://arxiv.org/abs/2410.24164)。
+精读：[本地 π0 v1](../../paper/2410.24164v1.pdf)；配套 [P1 架构](../notes/pi_series/01_pi0_architecture.md) 和 [P2 flow](../notes/pi_series/02_flow_matching.md)。上述噪声→数据公式采用自洽教学约定；原文 v1 的符号不一致与 openpi 反向时间约定见 P2。
 
 ### M5：FAST 与 π0-FAST（3-4 天）
 
@@ -127,7 +127,7 @@ $$
 2. 任务泛化：能把长任务分解成合适的子任务。
 3. 物理泛化：能在新的几何、摩擦、接触与机器人动力学下成功执行。
 
-精读：[π0.5 论文](https://arxiv.org/abs/2504.16054)。
+精读：[本地 π0.5 v1](../../paper/2504.16054v1.pdf) 与 [P4 完整配方和证据](../notes/pi_series/04_pi05_generalization.md)。包括 FAST 离散预训练、flow expert post-training 以及六类监督，不能只读作“在 π0 中增加 web data”。
 
 ### M7：openpi 代码闭环（1-2 周）
 
@@ -192,7 +192,7 @@ raw episode
 1. ACT、Diffusion Policy。
 2. RT-1、RT-2、Open X-Embodiment/RT-X。
 3. Octo、OpenVLA。
-4. π0、FAST、π0.5。
+4. FAST；π0 与 π0.5 已有本地 v1 及独立专题，不再列为本地资料缺口。
 5. Flow Matching 原始论文。
 
 现有论文已足够覆盖力觉 VLA 专题。先补前四组主干论文，比继续增加同类 force-aware VLA 更能完善知识结构。

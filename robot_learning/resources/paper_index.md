@@ -1,8 +1,17 @@
 # 本地论文索引
 
-当前共 22 篇。优先级含义：A = 当前路线精读；B = 围绕研究问题选读；C = 查表式对照。这里按概念组织，不按年份排序。
+当前共 24 篇。优先级含义：A = 当前路线精读；B = 围绕研究问题选读；C = 查表式对照。这里按概念组织，不按年份排序。
 
 PDF 集中存放在项目根目录的 [paper/](../../paper/README.md)。
+
+## 通用 VLA / Pi 主干
+
+| 优先级 | 论文与本地版本 | 核心贡献 | 阅读时关注 |
+|---|---|---|---|
+| A | [π0: A Vision-Language-Action Flow Model for General Robot Control](../../paper/2410.24164v1.pdf)，arXiv:2410.24164v1，2024-10-31；[来源](https://arxiv.org/abs/2410.24164v1) | 预训练 VLM + continuous flow action expert，跨机器人 pre/post-training | §IV/V、附录 B/D/E；expert/mask、flow 符号、执行时序、部分进度评分 |
+| A | [π0.5: a Vision-Language-Action Model with Open-World Generalization](../../paper/2504.16054v1.pdf)，arXiv:2504.16054v1，2025-04-22；[来源](https://arxiv.org/abs/2504.16054v1) | 异构 co-training、FAST 预训练与 flow post-training、同模型高低层推理 | §IV/V、附录 B–E；六类数据、注意力隔离、场景/对象泛化与消融范围 |
+
+对应 [Pi 系列独立专题](../notes/pi_series/README.md)。精读依据为本地 v1 全文；公开 openpi 与 KI 的版本差异在课程中单独标明。FAST 当前仍是 [外部阅读](https://arxiv.org/abs/2501.09747)，不计入本地 PDF 数量。
 
 ## 多模态感知与数据采集
 
