@@ -1,10 +1,16 @@
 # Robot Learning 代码实验
 
+2026-10-21：当前转入VLA主线。新增 [VLA01 tensor trace](notebooks/VLA01_token_action_trace.ipynb) 与 [VLA02多速率接触执行](notebooks/VLA02_multirate_force_execution.ipynb)，配合 [第6–15课](../notes/README.md)。加上原有9份，共11份notebook；仍只完成静态检查，云端执行待记录。
+
+**当前默认入口：[Colab notebooks](notebooks/README.md)。** 2026-10-19 已将三个现有实验整理为独立 `.ipynb`，并新增 6 个 ML notebook；学习者不需要本地安装环境或执行命令。课程对应见 [ML 面试 M1–M10](../notes/ml_interview/README.md)。所有 notebook 输出留空，已做静态检查，实际 Colab 运行待记录。
+
 实验配合 [第 4–19 课计划](../planning/course_plan.md)。基础实验使用小数据、小模型与可控合成环境；与论文复现区分。每个实验记录配置、seed、数据 split 和评价指标，并写出结果的解释。
 
-当前已经实现：Lab 01 和 Lab 02 的数据窗口阶段。Lab 02 的 action/frame conversion 在第 13 课扩展；其他条目是后续实现规格。
+当前已有Lab01、Lab02的数据窗口阶段、Pi机制代码与ML/VLA notebooks。VLA01覆盖部分token/mask/gradient trace，VLA02覆盖规则式反馈与多速率toy；两者不等于完整openpi或FP2复现。Lab02的真实action/frame conversion、Lab07/08等未实现部分继续保留为规格。
 
-## 运行位置与结果
+## 旧脚本入口与历史结果
+
+本节命令保留用于维护与历史复查；日常学习直接上传对应 notebook 到 Colab。旧 `.py` 的已有运行记录不代表 `.ipynb` 已在云端执行。
 
 下面的命令都从论文工作区根目录 `RobotLearning/` 执行。实验代码在 `robot_learning/labs/`，讲义在同级 `notes/`，运行结果写入本目录的 `results/`。小型 JSON 与实验说明由 Git 跟踪，大型 checkpoint 与运行缓存会被忽略。
 
@@ -12,6 +18,23 @@
 |---|---|---|
 | [01_probabilistic_bc.py](01_probabilistic_bc.py) | [第 4 课](../notes/04_probabilistic_bc_and_training.md) | `results/lab01_seed7.json` 与运行记录 |
 | [02_episode_windows.py](02_episode_windows.py) | [第 5 课](../notes/05_training_data_and_observation.md) | `results/lab02_episode_windows.json` |
+| [pi_series_mechanics.py](pi_series_mechanics.py) | [Pi 专题 P2/P4/P5](../notes/pi_series/README.md) | `results/pi_series_mechanics.json` 与运行记录 |
+
+## Pi 专题机制实验（独立于主线 Lab 编号）
+
+依赖：Python 3.9+ 标准库；CPU 即可，无第三方安装、模型权重或网络请求。
+
+```bash
+python3 robot_learning/labs/pi_series_mechanics.py --output robot_learning/labs/results/pi_series_mechanics.json
+```
+
+三个检查：
+
+1. 从线性路径有限差分核对 velocity；比较正反时间积分，检测只翻 target 符号的错误。
+2. 用两层教学 attention 检查 FAST target 隔离、padding 和 AR 因果性；故意开放 prefix 读取 targets，展示间接泄漏。
+3. 计算 50 Hz 时不同 inference latency 对 200 ms 执行窗口和过时 waypoint 的影响。
+
+脚本使用端点已知的 oracle velocity、手写 attention 和时钟算术，不训练 Transformer、不是 physical simulator，也不验证真实机器人成功率。`--seed` 和 `--steps` 可修改；输出限定在本仓库内。解读见 [运行记录](results/pi_series_mechanics_run_notes.md)。
 
 ## 后续实验规格
 
