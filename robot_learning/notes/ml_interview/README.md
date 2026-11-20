@@ -21,6 +21,12 @@
 
 另有 [40 道面试题与评分要点](interview_drill.md)。讲义是可学习材料，不代表已学完或已通过面试验收。
 
+## Transformer 由浅入深专题
+
+2026-11-18 新增 [Transformer 专题 T1–T8](transformer/README.md)：8 课、24 个小单元，从 attention 手算进入完整 block、位置编码/RoPE、mask、训练目标、KV cache、推理效率及 coding/system 面试。M8 保留为概览与 FP2 应用入口。
+
+建议从 [T1：从加权平均到多头 Attention](transformer/01_attention_from_scratch.md) 顺序推进；重点疑问可直接读 [T4：causal / padding / loss / prefix mask](transformer/04_masks_and_information_flow.md) 和 [T6：KV cache 与非方阵 mask](transformer/06_kv_cache_and_decoding.md)。另配 [40 道 Transformer 题卡](transformer/interview_drill.md)、[速查表](transformer/cheatsheet.md)及自包含 [TR01 机制 Notebook](transformer/notebooks/TR01_attention_masks_and_cache.ipynb)。检查范围见 [VALIDATION](transformer/VALIDATION.md)，材料准备与本人掌握、Colab 运行分别记录。
+
 ## 面试时间紧时的顺序
 
 建议按知识点安排，不强求十课顺序通读。以下是学习时间预算，不是 notebook 实测运行耗时。

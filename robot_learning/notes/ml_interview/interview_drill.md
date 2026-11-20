@@ -1,5 +1,7 @@
 # ML 面试题卡：40 题
 
+Transformer 的更深入追问见独立 [40 道 Transformer 题卡](transformer/interview_drill.md)，配套 [8 课渐进学习路线](transformer/README.md)。本页原有 40 题编号保持不变。
+
 [课程入口](README.md)。每题先做 60–90 秒口述，再回答一层追问。评分：0=概念错误；1=能背定义；2=有公式/shape/例子；3=能解释假设、反例和实验。记录分数与错误原因，不用阅读次数代替验收。
 
 ## 概率与线性模型（M1–M2）

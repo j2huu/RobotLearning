@@ -2,6 +2,8 @@
 
 [目录](README.md) · [上一课](07_representation_learning.md) · [下一课](09_generative_models.md) · [Colab ML05](../../labs/notebooks/ML05_attention_compressor.ipynb)
 
+本课保留 Attention 与 FP2 compressor 的应用概览。需要系统准备通用 Transformer 面试时，进入 [T1–T8 渐进专题](transformer/README.md)：从手算、完整 block 和 RoPE，学到 [Mask 专课](transformer/04_masks_and_information_flow.md)、训练标签对齐、KV cache、GQA/FlashAttention 与 coding 诊断，不必从 FP2 场景倒推所有基础。
+
 ## 1. Q、K、V 是信息检索的三个角色
 
 $$
