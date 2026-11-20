@@ -160,6 +160,23 @@
 
 ## 25 分钟模拟
 
+### Walker项目加试：学完R7D后使用
+
+先读 [项目课](07d_dm_walker_project.md)，每次挑两题替换通用题，原Q01–Q33编号保留。
+
+| 追问 | 应回答的机制与边界 |
+|---|---|
+| 24维分别是什么？ | body orientations14 + torso height1 + generalized velocity9；不是24关节角 |
+| 6维输出是位置还是力矩？ | 六个motor controls；不能直接把[-1,1]说成相同N·m范围，需计入gear |
+| 只有6个输出如何定义随机策略？ | mu为6维；另有可学习state-independent log_std6，执行动作仍6维 |
+| Critic为什么不输出6个值？ | 当前策略从观测继续的标量折扣回报，不是逐actuator评分 |
+| log-prob为什么sum？ | 对角Gaussian联合密度取乘积，因此log求和；每transition一个ratio |
+| buffer=4096时为什么可能有200个optimizer steps？ | 完整1000步回合聚合到5000；ceil(5000/256)×10=200 |
+| 900+证明什么？ | 既有材料的训练episode return；不是多seed独立评估均值 |
+| 哪些功能没有做？ | 最终代码无entropy bonus/KL early stop/checkpoint-resume；不把模板可选项当本人实现 |
+
+### 通用题模拟
+
 5 分钟：Q01/Q04；5 分钟：Q08 手算；7 分钟：Q19/Q23；5 分钟：Q28 或 Q31；3 分钟：Q33。每次只挑一套，记下追问中最先断开的因果环，再回对应单元补习。
 
 每个主题的原始来源见 [资料表](resources.md)。这些是按知识覆盖设计的练习题，不是任何公司的真实题库。

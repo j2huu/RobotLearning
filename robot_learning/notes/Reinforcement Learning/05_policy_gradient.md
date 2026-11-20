@@ -69,3 +69,11 @@ Actor 更新时把估计 advantage 当固定权重。若 actor/critic 共享 enc
 验收：从轨迹概率推导梯度；解释为何环境不可导仍可学；用公式证明 state-only baseline 的期望项为 0；检查 actor loss 符号。
 
 参考：[Spinning Up：Policy Optimization 推导](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html)、[Sutton & Barto 第 13 章](resources.md)。
+
+## 用你的Walker项目对照
+
+你的Gaussian actor输出mu[B,6]，另有可学习的state-independent log_std[6]；sample得到六维raw action。log_prob按六个维度求和，每条transition一个标量。PPO用这些采样动作的密度与advantage更新策略，不要求MuJoCo的环境步进对参数可导。
+
+自问：fixed_var=True为什么仍会训练std？六个ratio都为1.01时，联合ratio为何不是1.01？
+
+详见 [R7D：DM Walker项目课](07d_dm_walker_project.md)。

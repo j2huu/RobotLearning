@@ -70,3 +70,11 @@ $$
 验收：写 SAC 两种 loss；解释熵、双 Q、replay 分别做什么；说明 actor 的梯度通过哪里；按具体交互成本比较 PPO/SAC。
 
 参考：[TD3 原文](https://arxiv.org/abs/1802.09477)、[SAC 原始论文](https://arxiv.org/abs/1801.01290)、[SAC 后续算法版本](https://arxiv.org/abs/1812.05905)、[Spinning Up SAC](https://spinningup.openai.com/en/latest/algorithms/sac.html)。
+
+## 用你的Walker项目对照
+
+把SAC作为对你PPO的设计对照：PPO用最近rollout的V/GAE，SAC通常用replay、Q和entropy目标；有界Gaussian的变换与log-density也需要一致处理。你的原项目raw Gaussian加执行clip，最终loss没有entropy项，不能因此声称已实现SAC。
+
+自问：如果改成SAC，buffer、critic输入输出和actor loss至少各要改什么？
+
+详见 [R7D：DM Walker项目课](07d_dm_walker_project.md)。

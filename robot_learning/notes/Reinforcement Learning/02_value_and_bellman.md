@@ -89,3 +89,11 @@ Dynamic Programming 假设能用转移/奖励模型做期望 backup：
 4. 若没有 $P$ 但能采到 transition，如何近似期望？下一课用 MC/TD。
 
 实验：[RL01](notebooks/RL01_tabular_foundations.ipynb) 第 3 节。参考：[Spinning Up：价值函数](https://spinningup.openai.com/en/latest/spinningup/rl_intro.html)、[Sutton & Barto 第 3/4 章](resources.md)。
+
+## 用你的Walker项目对照
+
+你的critic是独立的24→256→256→1网络。这个1估计从当前观测继续按策略行动的折扣回报，不是即时reward，也不是给六个motor各打一个分；当前项目没有训练SAC式Q网络。用V(next)构造target时，先说明next是否真实terminal。
+
+自问：相同姿态但速度不同，为什么V可能不同？为什么它不是[0,1]的成功概率？
+
+详见 [R7D：DM Walker项目课](07d_dm_walker_project.md)。

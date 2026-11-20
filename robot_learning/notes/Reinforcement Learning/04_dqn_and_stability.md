@@ -56,3 +56,11 @@ $$
 验收：解释 replay/target/Double 分别改变数据、目标稳定性、max 估计中的哪一环；画出哪些张量需要梯度。
 
 参考：[DQN：2015 Nature 原文](https://www.nature.com/articles/nature14236)、[Double DQN](https://arxiv.org/abs/1509.06461)。Dueling/PER 属于扩展识别，原文入口见 [资料表](resources.md)。
+
+## 用你的Walker项目对照
+
+Walker的6维action代表六个连续motor输入，不是六个可选动作。因此不能把DQN的6个Q输出直接解释成这份actor。若想用离散化方案，需要定义每维分箱和联合动作组合，且这是额外设计；你实际实现的是Gaussian PPO。
+
+自问：每个motor分成5档，共有多少联合动作？5**6=15625，而不是30。
+
+详见 [R7D：DM Walker项目课](07d_dm_walker_project.md)。

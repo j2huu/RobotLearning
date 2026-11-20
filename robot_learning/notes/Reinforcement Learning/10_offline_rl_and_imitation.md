@@ -58,3 +58,11 @@ IQL 不需要在这些 value 更新中显式评价 actor 生成的未见动作�
 验收：解释 off-policy/offline；画出 B=100 的反例；比较 CQL 与 IQL；说明 BC、DAgger、RL 各需要何种反馈。BC 不以显式回报为优化目标，但不能据此断言它在任何情况下都无法超过某条示范轨迹。
 
 参考：[DAgger](https://proceedings.mlr.press/v15/ross11a.html)、[CQL](https://arxiv.org/abs/2006.04779)、[IQL](https://arxiv.org/abs/2110.06169)。
+
+## 用你的Walker项目对照
+
+你的Walker数据来自当前策略与环境交互，按最近buffer做有限轮PPO更新后清空；不是专家action数据集，也不是offline RL。将所有历史transition长期混用，会改变原on-policy训练假设，不能只把buffer更名为replay就认为算法不变。
+
+自问：若只剩旧轨迹、不能再交互，你还缺什么信息，原PPO更新的哪些前提会失效？
+
+详见 [R7D：DM Walker项目课](07d_dm_walker_project.md)。

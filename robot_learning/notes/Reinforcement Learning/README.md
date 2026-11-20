@@ -2,7 +2,9 @@
 
 建立日期：2026-10-25。与 [ML 专题 M1–M10](../ml_interview/README.md) 并列，采用独立 **R1–R11** 编号。仓库实际目录是 `robot_learning/notes/`；本专题承接主线第 16/17 课的 RL 内容，MPC 作为连接控制的补充，不代表主线所有后续课程已经完成。
 
-**第一次从 [R1：MDP、reward 与 return](01_mdp_and_return.md) 的 R1A 开始。** 每次只推进一个小单元，先用自己的话解释，再手算，最后看参考答案。PPO/SAC 放在基础之后，避免只背算法名。
+**2026-11-09，先接到你自己的项目：[R7D：DM Walker项目课](07d_dm_walker_project.md)。** 先用W1/W2弄清24维observation、6维motor controls与actor/critic；需要补概念时沿下表回到R1–R7，之后再完成W3/W4的GAE和完整更新。R1–R11的理论课号保留。
+
+第一次系统学RL仍可从 [R1A](01_mdp_and_return.md) 开始；现在各课末尾有“用你的Walker项目对照”，让公式落到同一条真实数据流上。SAC/offline等内容明确作为后续设计对照，不说成你的PPO项目已经实现。
 
 ## 复习地图
 
@@ -31,6 +33,7 @@ flowchart TD
 | [R5：Policy Gradient](05_policy_gradient.md) | A 轨迹概率；B REINFORCE；C baseline | 推出 log-prob 梯度，解释为何不需要环境可导 | P0 |
 | [R6：Actor-Critic 与 GAE](06_actor_critic_and_gae.md) | A actor/critic；B GAE；C tensor/边界 | 手算 advantage，区分 bootstrap 与递推 mask | P0 |
 | [R7：PPO](07_ppo.md) | A ratio/clip；B 训练循环；C KL/故障 | 算正负 advantage 的裁剪，解释 clip 的局限 | P0 |
+| [R7D：你的DM Walker项目](07d_dm_walker_project.md) | W1 24/6物理接口；W2 Gaussian与V；W3 GAE；W4完整update | 读自己的源码、推tensor、算5000条数据的更新次数；[RL02 Colab](notebooks/RL02_walker_ppo_tensor_trace.ipynb) | 项目主线 |
 | [R8：DDPG、TD3 与 SAC](08_continuous_control_and_sac.md) | A deterministic actor；B TD3；C entropy/SAC | 写 SAC target 和 actor loss，比 PPO/SAC | P0 |
 | [R9：探索、奖励与模型](09_exploration_reward_and_models.md) | A exploration；B shaping；C model-based/MPC | 识别 reward hacking，解释模型误差与时域 | P1 |
 | [R10：Offline RL 与模仿](10_offline_rl_and_imitation.md) | A BC/DAgger；B support/OOD；C CQL/IQL | 用小反例解释离线 Q 的外推问题 | P0 |
@@ -57,6 +60,8 @@ P0 是本专题建议先练的基础，不是任何公司的真实题频统计�
 [RL01：两状态 MDP、Bellman 与 TD](notebooks/RL01_tabular_foundations.ipynb) 是一份自包含 notebook：Python 标准库、合成小环境、不需要下载数据或配置本地环境。上传单个文件到 Colab，从头运行；R1 先看回报，R2 看 Bellman，R3 再看采样更新。
 
 当前仅准备代码并做静态检查，**未执行 notebook，也未在 Colab 验证运行**。运行后填写 [学习记录](progress.md)。小环境的结果只解释表格 RL，不证明 PPO/SAC 或真实机器人效果。
+
+项目配套 [RL02：Walker PPO tensor trace](notebooks/RL02_walker_ppo_tensor_trace.ipynb) 可单独上传Colab，使用合成24维字段和同尺寸actor/critic，打印mu/std/value/log-prob/ratio，并做一次合成minibatch更新。它不安装或创建dm_control，不训练Walker步态；本次只生成/静态检查，未执行。学习者无需运行 [文件生成器](tools/build_walker_notebook.py)。
 
 ## 符号与约定
 

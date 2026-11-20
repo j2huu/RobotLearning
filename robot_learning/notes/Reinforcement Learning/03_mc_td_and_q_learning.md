@@ -78,3 +78,11 @@ target = reward + gamma * (1.0 - terminated) * next_value
 4. 写一个会跨 reset 错连数据的反例，说明它怎样污染价值。
 
 实验：[RL01](notebooks/RL01_tabular_foundations.ipynb) 第 4–6 节。参考：[Sutton & Barto 第 5–7 章](resources.md)；边界处理依据 [Gymnasium：Handling Time Limits](https://gymnasium.farama.org/v1.3.0/tutorials/gymnasium_basics/handling_time_limits/)。
+
+## 用你的Walker项目对照
+
+Walker项目通过GAE组合TD residual来训练actor/critic；没有使用表格Q-learning来选择六个离散动作。原代码每条trajectory单独算GAE，并将last都作为timeout来bootstrap；标准时间限制与真正任务终止须分开，新环境不可直接照抄。
+
+自问：r=1、V=.7、gamma=.99、末端V=.8时，timeout与terminal的delta分别为何是1.092和.3？
+
+详见 [R7D：DM Walker项目课](07d_dm_walker_project.md)。

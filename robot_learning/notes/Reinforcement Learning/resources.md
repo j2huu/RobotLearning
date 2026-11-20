@@ -34,3 +34,16 @@
 | Offline RL | [CQL](https://arxiv.org/abs/2006.04779)、[IQL](https://arxiv.org/abs/2110.06169) | R10 |
 
 各课数值、环境、诊断题和代码是自行构造的教学材料，不是论文实验复现。面试优先级是学习安排建议，不代表公司题库或可验证的出现频率。
+
+## 你的Walker项目：2026-11-09核对
+
+[项目课](07d_dm_walker_project.md) 以本人的`hw4/walker.py`为主，既有 [NIO实现复盘](../../../../JOB/interview/NIO_interview/ppo_walker_implementation_review.md) 作为辅助；本次没有重新训练或恢复历史依赖环境。
+
+| 原始资料 | 核对什么 |
+|---|---|
+| [DM Control Walker](https://github.com/google-deepmind/dm_control/blob/main/dm_control/suite/walker.py) | observation字段、reward、任务与control timestep |
+| [walker.xml](https://github.com/google-deepmind/dm_control/blob/main/dm_control/suite/walker.xml) | body/joint/actuator顺序、control范围和physics timestep |
+| [Physics.velocity](https://github.com/google-deepmind/dm_control/blob/main/dm_control/mujoco/engine.py) | velocity返回qvel，而非只取六个腿关节速度 |
+| [MuJoCo actuation model](https://mujoco.readthedocs.io/en/stable/computation/index.html#actuation-model) | control、传动与关节广义力的关系 |
+
+当前main的语义用于交叉检查；它不证明项目当年的dm_control/MuJoCo版本。原实现、教学GAE参考函数、合成notebook分别标明边界。

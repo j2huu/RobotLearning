@@ -51,3 +51,11 @@ MPC 每次基于新观测重新规划，只执行前一小段。若使用已知�
 验收：对稀疏成功奖励提出两种有区别的改进；构造 reward hacking 反例；解释 shaping 的条件；说明 MPC 和 RL 的关系。
 
 参考：[Potential-based shaping 原文](https://people.eecs.berkeley.edu/~russell/papers/icml99-shaping.pdf)、[RND](https://arxiv.org/abs/1810.12894)、[HER](https://arxiv.org/abs/1707.01495)、[Berkeley CS285 的探索与 model-based 讲义入口](https://rail.eecs.berkeley.edu/deeprlcourse/)。机器人数字例子为教学设计。
+
+## 用你的Walker项目对照
+
+你的最终Walker脚本直接使用环境reward，未额外缩放，也没有学习forward dynamics。先讲清官方任务对站立、直立和向前运动的组合目标，再说你负责的是策略训练。训练探索来自Gaussian采样，viewer改用均值；两种评估条件不同。
+
+自问：速度很快但经常倒地，应先检查哪些reward分项与评价指标，而不是只看最高return？
+
+详见 [R7D：DM Walker项目课](07d_dm_walker_project.md)。

@@ -110,3 +110,11 @@ $$
 实验：[RL01](notebooks/RL01_tabular_foundations.ipynb) 第 1–2 节。下一次只带走一句话：**reward 评价这一步，return 累计从这一步开始的未来。**
 
 参考：[Spinning Up：基本概念](https://spinningup.openai.com/en/latest/spinningup/rl_intro.html)；[资料表中的 Sutton & Barto 第 3 章](resources.md)。本课两路径环境和数字是自建教学例子。
+
+## 用你的Walker项目对照
+
+你的Walker把14维身体姿态、1维高度和9维广义速度拼成24维observation；actor产生6维连续motor controls，env.step返回即时reward。一个episode的reward相加是训练曲线里的episode return；策略目标里的折扣return还要计gamma。先分清observation、物理自由度、action和return，不能把24叫作24个关节。
+
+自问：如果某回合1000步累计900分，平均每步reward是多少？这能否证明多seed平均达到900？
+
+详见 [R7D：DM Walker项目课](07d_dm_walker_project.md)。

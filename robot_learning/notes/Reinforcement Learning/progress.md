@@ -17,6 +17,14 @@
 | R9 探索/模型 | [ ] | [ ] | [ ] | |
 | R10 Offline/IL | [ ] | [ ] | [ ] | |
 | R11 机器人/诊断 | [ ] | [ ] | [ ] | |
+| R7D Walker项目 W1–W4 | [ ] | [ ] | [ ] | 先解释24维observation、6维motor与Gaussian分布 |
+
+## Walker项目课与RL02（2026-11-09）
+
+- [R7D讲义](07d_dm_walker_project.md) 已依据本人`hw4/walker.py`核对，源码SHA256与既有项目复盘一致；未修改外部课程源码。
+- W1：待独立说明14+1+9字段及六个actuators；W2：待讲mu/std/V与joint log-prob；W3：待算timeout/terminal；W4：待追一轮buffer/update。
+- [RL02](notebooks/RL02_walker_ppo_tensor_trace.ipynb) 是合成tensor/gradient检查；`runtime_execution: not performed`，不是Walker训练结果。
+- 本人实际Colab日期、输出与解释：待记录。历史900+表述不由本次教材生成升级成独立评估均值。
 
 ## RL01 实验状态
 

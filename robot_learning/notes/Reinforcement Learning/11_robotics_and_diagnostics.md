@@ -68,3 +68,11 @@ Domain randomization 随机化动力学/观测条件以训练鲁棒行为，syst
 验收：画系统数据流；定位一个 sim-to-real 反例；用模板讲自己的项目；明确哪些结果来自实际运行、哪些只是设计或教学代码。
 
 参考：[Berkeley CS285](https://rail.eecs.berkeley.edu/deeprlcourse/)、[SAC Algorithms and Applications](https://arxiv.org/abs/1812.05905)。本课诊断表是学习用检查思路，不是特定论文实现或真机实验记录。
+
+## 用你的Walker项目对照
+
+先用Walker讲清24维输入字段、六个motor的control/gear、normalizer与三种clip，再迁移到机器人接口。40Hz决策/400Hz积分来自当前官方环境的交叉核对，不是已复测历史控制频率。900+是既有材料中的训练episode表现；原脚本没有checkpoint/normalizer保存和多seed独立评价。
+
+自问：你下一步如何记录checkpoint、normalizer、版本、训练seed与评估episodes，使项目更可复查？
+
+详见 [R7D：DM Walker项目课](07d_dm_walker_project.md)。

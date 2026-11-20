@@ -75,3 +75,11 @@ returns = advantage + value  # 更新前固定的 value
 验收：算对三步 GAE；解释 lambda；说清为什么截断时两个 mask 可以不同；检查 reward `[B]` 与 value `[B,1]` 的广播。
 
 参考：[GAE 原文](https://arxiv.org/abs/1506.02438)、[Gymnasium 的终止/截断处理](https://gymnasium.farama.org/v1.3.0/tutorials/gymnasium_basics/handling_time_limits/)。双 mask 伪代码是按本课 buffer 约定写的教学形式。
+
+## 用你的Walker项目对照
+
+先按项目课的三步trajectory手算，再检查你自己的calculate_advantage。gamma=.99、lambda=.95，GAE按每条trajectory反推，之后才拼入buffer；old values和targets在PPO更新前固定。last统一bootstrap是原实现的边界选择，不要把更完整的双mask参考代码说成旧项目已实现。
+
+自问：末端V=.8改为真正terminal的0，最早一步的advantage为何也会变化？
+
+详见 [R7D：DM Walker项目课](07d_dm_walker_project.md)。

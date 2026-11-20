@@ -6,20 +6,20 @@
 
 ## 核心公式
 
-| 量 | 公式 | 要说清的条件 |
-|---|---|---|
-| Return | $G_t=\sum_{k\geq0}\gamma^k r_{t+k}$ | 有限回合到终止；无限时域检查收敛 |
-| V/Q | $V^\pi=\mathbb E_\pi[G_t\mid s_t]$；$Q^\pi=\mathbb E_\pi[G_t\mid s_t,a_t]$ | 未来依赖策略 |
-| Advantage | $A^\pi=Q^\pi-V^\pi$ | 对 $a\sim\pi$ 的均值为 0 |
-| Bellman evaluation | $V^\pi(s)=\mathbb E[r+\gamma V^\pi(s')]$ | 当前 action 按 $\pi$ 平均；终止 continuation=0 |
-| TD residual | $\delta=r+\gamma bV(s')-V(s)$ | 使用 final observation |
-| SARSA target | $r+\gamma bQ(s',a')$ | 下一动作来自当前行为策略 |
-| Q-learning target | $r+\gamma b\max_{a'}Q(s',a')$ | 目标为贪心；数据可探索采样 |
-| GAE | $\hat A_t=\delta_t+\gamma\lambda c_t\hat A_{t+1}$ | $c_t$ 切断跨 episode/当前 buffer 边界 |
-| Policy gradient | $\mathbb E[\sum_t\gamma^t\nabla\log\pi(a_t\mid s_t)(G_t-b(s_t))]$ | 精确折扣目标、轨迹采样约定见 R5 |
-| PPO surrogate | $\mathbb E[\min(\rho A,\operatorname{clip}(\rho,1-\epsilon,1+\epsilon)A)]$ | 最大化；old log-prob、A 固定 |
-| SAC target | $r+\gamma b(\min_i Q_i'(s',a')-\alpha\log\pi(a'\mid s'))$ | $a'$ 从当前 actor 采；target 无梯度 |
-| SAC actor loss | $\mathbb E[\alpha\log\pi(a\mid s)-\min_iQ_i(s,a)]$ | 最小化；Q 对 actor 动作保留梯度 |
+| 量                  | 公式                                                                         | 要说清的条件                                 |
+| ------------------ | -------------------------------------------------------------------------- | -------------------------------------- |
+| Return             | $G_t=\sum_{k\geq0}\gamma^k r_{t+k}$                                        | 有限回合到终止；无限时域检查收敛                       |
+| V/Q                | $V^\pi=\mathbb E_\pi[G_t\mid s_t]$；$Q^\pi=\mathbb E_\pi[G_t\mid s_t,a_t]$  | 未来依赖策略                                 |
+| Advantage          | $A^\pi=Q^\pi-V^\pi$                                                        | 对 $a\sim\pi$ 的均值为 0                    |
+| Bellman evaluation | $V^\pi(s)=\mathbb E[r+\gamma V^\pi(s')]$                                   | 当前 action 按 $\pi$ 平均；终止 continuation=0 |
+| TD residual        | $\delta=r+\gamma bV(s')-V(s)$                                              | 使用 final observation                   |
+| SARSA target       | $r+\gamma bQ(s',a')$                                                       | 下一动作来自当前行为策略                           |
+| Q-learning target  | $r+\gamma b\max_{a'}Q(s',a')$                                              | 目标为贪心；数据可探索采样                          |
+| GAE                | $\hat A_t=\delta_t+\gamma\lambda c_t\hat A_{t+1}$                          | $c_t$ 切断跨 episode/当前 buffer 边界         |
+| Policy gradient    | $\mathbb E[\sum_t\gamma^t\nabla\log\pi(a_t\mid s_t)(G_t-b(s_t))]$          | 精确折扣目标、轨迹采样约定见 R5                      |
+| PPO surrogate      | $\mathbb E[\min(\rho A,\operatorname{clip}(\rho,1-\epsilon,1+\epsilon)A)]$ | 最大化；old log-prob、A 固定                  |
+| SAC target         | $r+\gamma b(\min_i Q_i'(s',a')-\alpha\log\pi(a'\mid s'))$                  | $a'$ 从当前 actor 采；target 无梯度            |
+| SAC actor loss     | $\mathbb E[\alpha\log\pi(a\mid s)-\min_iQ_i(s,a)]$                         | 最小化；Q 对 actor 动作保留梯度                   |
 
 ## 算法地图
 
@@ -49,3 +49,9 @@ On/off-policy 与 online/offline 是两个轴。Model-based/model-free 是另一
 - 小 TD loss、高训练 reward、一次成功，都不足以证明策略可靠。
 
 公式依据及原文见 [资料表](resources.md) 和各课末尾；数值例子均为教学构造。
+
+## Walker项目速查（2026-11-09）
+
+24维observation=orientation14+height1+qvel9；6维action是左右hip/knee/ankle的motor controls。Actor均值24→256→256→6，独立可学习log_std6，初始std≈.60653；critic独立24→256→256→1。
+
+Joint logp沿6维sum；buffer保存raw action和当时normalized obs。gamma=.99、lambda=.95；4096是触发门槛，5000条/256/10epochs对应200 optimizer steps。Loss=actor+.5value，无entropy；action clip、ratio clip、grad clip分别处理。末端last统一bootstrap与900+训练回合结果都有范围限制，见 [项目课](07d_dm_walker_project.md)。

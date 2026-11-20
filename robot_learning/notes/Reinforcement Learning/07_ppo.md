@@ -62,3 +62,11 @@ PPO-Clip 没有严格约束所有状态动作的概率比或 KL；参数共享�
 验收：不用笔记算上表；用 60 秒讲一轮 PPO；指出 clip 与硬约束的区别；说明 old log-prob 为什么应固定且不带梯度。
 
 参考：[PPO 原文](https://arxiv.org/abs/1707.06347)、[Spinning Up PPO](https://spinningup.openai.com/en/latest/algorithms/ppo.html)。
+
+## 用你的Walker项目对照
+
+你的具体实现是actor loss+.5 value MSE，一个Adam优化两套独立网络，10 epochs、minibatch256、ratio clip .2、联合grad norm clip .5。未启用entropy bonus/KL early stop。4096是整回合buffer触发门槛；5000条时每epoch20个minibatches，共200次optimizer steps。
+
+自问：动作clip、ratio clip、梯度clip各限制哪个对象？用同一个raw action算old/new logp，为什么不重新采动作？
+
+详见 [R7D：DM Walker项目课](07d_dm_walker_project.md)。
