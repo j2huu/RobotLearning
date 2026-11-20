@@ -10,9 +10,17 @@
 
 近期 RL 面试复习使用与 ML 并列的 [Reinforcement Learning 专题 R1–R11](notes/Reinforcement%20Learning/README.md)：从 [R1：MDP 与 return](notes/Reinforcement%20Learning/01_mdp_and_return.md) 开始，逐步进入 Bellman/TD、PPO、SAC 与 Offline RL。配 33 道题卡、公式表和专题内的 RL01 notebook，讲义准备与本人掌握/运行分别记录。
 
+机器人基础同步使用 [Robotics Fundamentals B0–B6](notes/Robotics%20Fundamentals/README.md)，与 ML/RL 并列。先用两连杆理解关节、任务与动作空间，再学坐标系、FK/IK 和 Jacobian，接着用单摆认识动力学，最后补 PD、重力补偿与接触控制。每课有手算和自测，另有可选 notebook。
+
+运控专题使用 [Motion Planning 与 Trajectory Generation MP1–MP8](notes/Motion%20Planning/README.md)，以两关节避障串起 A*、RRT、路径平滑、轨迹限幅和执行交接。
+
 [Pi系列专题P1–P6](notes/pi_series/README.md) 在主线第11/12课作为深读材料，不需同时从头启动另一条课程。[第4–19课总体计划](planning/course_plan.md) 保留课程覆盖范围；当前每天学什么以循序路线为准。
 
 学习目的进一步明确为 VLA / Robot Learning Engineer 的知识补齐、面试表达与项目能力，见 [岗位能力地图](resources/vla_job_competency_map.md)。配套 [实验](labs/README.md)、[学习记录](planning/progress.md) 和 [资源地图](resources/resource_map.md) 沿用原目录。
+
+2026-11-09：[FP2源码精读](notes/03d_fp2_source_architecture_and_training.md) 已同步Ai2最新架构笔记，以peg/RLT1024配置讲清context读取、compressor冻结、FiLM/GRU/gating、三头与标签；配合 [论文tensor推导](notes/03c_fp2_tensor_walkthrough.md) 和第14课阅读。论文、源码配置与教学实验分别标注。
+
+RL现结合个人项目学习：[DM Walker项目课](notes/Reinforcement%20Learning/07d_dm_walker_project.md) 从24维observation、6维motor到actor/critic、GAE、PPO更新，配 [RL02 Colab](notes/Reinforcement%20Learning/notebooks/RL02_walker_ppo_tensor_trace.ipynb)。原RL各课添加项目对照，SAC等作为后续比较，不写成个人已完成实现。
 
 ## 第5课之后：VLA 正课第6–15课
 

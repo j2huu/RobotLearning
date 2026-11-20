@@ -4,7 +4,15 @@
 
 “已讲解”表示已有讨论/讲义；“通过”需要独立推导、代码解释和口述。当前不根据阅读数量推断掌握程度。
 
+## 2026-11-09 FP2材料同步
+
+[3d源码精读](../notes/03d_fp2_source_architecture_and_training.md) 已依据Ai2 09笔记与当前工作树定向核对，20个记录文件摘要匹配；补齐peg/RLT1024的context、梯度、FiLM/GRU/gate、三头与单步标签。旧论文笔记和第14课保留原推导，新增配置限定与当前时钟差异。
+
+材料状态：已更新。本人验收仍待记录：画两条context路径、解释alpha/冻结、手算35/40与36/40、区分任务微调和FP2增量。本次未加载权重、运行模型、训练或连接机器人，未改写Colab运行状态。
+
 ## 当前学习位置（2026-10-21）
+
+2026-11-09 RL项目入口已补充：[R7D DM Walker](../notes/Reinforcement%20Learning/07d_dm_walker_project.md) 先学24维observation与6维motor，再接actor/critic、GAE和PPO更新；RL各课添加项目对照。RL02仅做合成机制实验，实际Colab运行和W1–W4本人验收见 [RL进度](../notes/Reinforcement%20Learning/progress.md)，尚未代填完成。
 
 用户反馈：ML题型已阅读完，希望VLA正课更细致、循序渐进并能服务面试。当前从 [第6课6A](../notes/06_multimodal_policy_representation.md) 开始，尚未代填本人掌握情况。第6–9课已细化讲义，第6–15课每课拆A/B/C三个单元；Pi材料在第11/12课深入，第16–19课仍按原计划准备。
 

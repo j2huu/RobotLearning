@@ -12,6 +12,14 @@
 
 近期面试补强：[Reinforcement Learning 专题 R1–R11](robot_learning/notes/Reinforcement%20Learning/README.md)，与 ML 并列。从 MDP、Bellman、TD 走到 PPO、SAC、Offline RL 和机器人诊断，配 33 道题卡与专题内的自包含 Colab notebook。首次从 [R1：reward 与 return](robot_learning/notes/Reinforcement%20Learning/01_mdp_and_return.md) 开始。
 
+项目学习入口：[你的DM Walker PPO](robot_learning/notes/Reinforcement%20Learning/07d_dm_walker_project.md)，专讲24维observation、6维motor control与实际训练数据流；配套 [RL02](robot_learning/notes/Reinforcement%20Learning/notebooks/RL02_walker_ppo_tensor_trace.ipynb) 只做合成tensor/gradient机制实验。
+
+同步补基础可读 [Robotics Fundamentals B0–B6](robot_learning/notes/Robotics%20Fundamentals/README.md)。从关节、任务与动作空间开始，依次复习坐标系、FK、IK、Jacobian、动力学和控制，以两连杆和单摆为例。
+
+[Motion Planning 与 Trajectory Generation MP1–MP8](robot_learning/notes/Motion%20Planning/README.md) 单独复习规划与运控，从 A*、RRT 和碰撞检查推进到限幅轨迹、时间参数化、轨迹优化和在线换轨。
+
+2026-11-09 FP2更新：[源码架构与训练精读](robot_learning/notes/03d_fp2_source_architecture_and_training.md) 已接入课程，按peg/RLT1024配置追踪token→FiLM/GRU/gate→三头、冻结与标签，并区分论文系统、源码变体和Colab toy。
+
 ```text
 RobotLearning/
 ├── paper/                   # 论文原文与新增 PDF

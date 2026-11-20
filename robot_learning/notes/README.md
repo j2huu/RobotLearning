@@ -11,6 +11,7 @@
 | 3 | [Slow-fast 接触策略](03_slow_fast_contact_policy.md) | [面试题卡](03_interview_drill.md) |
 | 3b | [FP2 adaptor 与 twist–wrench](03b_fp2_adaptor_twist_wrench.md) | frame、mask、hybrid force-position control |
 | 3c | [FP2 tensor 与数据流](03c_fp2_tensor_walkthrough.md) | compressor、三个控制参数、controller tensor 示例 |
+| 3d | [FP2源码架构与训练](03d_fp2_source_architecture_and_training.md) | peg/RLT1024、FiLM/GRU/gating、三头loss、未来标签与实验归因 |
 | 4 | [概率视角的 BC](04_probabilistic_bc_and_training.md) | [Colab Lab01](../labs/notebooks/Lab01_probabilistic_bc.ipynb) |
 | 5 | [训练、数据与观测](05_training_data_and_observation.md) | [Colab Lab02](../labs/notebooks/Lab02_episode_windows.ipynb) |
 | 6 | [VLA 多模态表示](06_multimodal_policy_representation.md) | RGB/text/state→tokens；[VLA01](../labs/notebooks/VLA01_token_action_trace.ipynb) |
@@ -26,6 +27,8 @@
 
 2026-10-21：当前学习入口从第5课接 [第6课6A](06_multimodal_policy_representation.md)。第6–15课讲义已准备；先逐单元理解再做阶段复盘。ML专题按需查缺，第11/12课复用Pi深读材料，学习者完成情况见 [进度](../planning/progress.md)。
 
+2026-11-09 FP2同步：先读3c建立论文计算图，再读3d的D1–D4对应当前选定源码；3b继续查几何与控制基础。第14课和面试练习册已接入3d，既有Colab仍为独立toy，不据此声称跑过真实FP2。
+
 ## ML 面试补强专题（2026-10-19）
 
 [M1–M10 课程与面试优先顺序](ml_interview/README.md)，包括概率/统计、线性与经典模型、tensor/backprop、优化、数据评价、PCA/聚类、attention、生成模型和 LoRA。配套 [40 题](ml_interview/interview_drill.md) 与 [Colab notebooks](../labs/notebooks/README.md)。使用独立 M 编号，主线 6–19 的安排保留。
@@ -33,6 +36,16 @@
 ## Reinforcement Learning 面试复习专题（2026-10-25）
 
 [R1–R11 课程与复习顺序](Reinforcement%20Learning/README.md) 与 ML 专题并列，依次复习 MDP/return、Bellman、MC/TD、DQN、Policy Gradient、Actor-Critic/GAE、PPO、SAC、探索/模型、Offline RL 和机器人系统。配 [33 道面试题](Reinforcement%20Learning/interview_drill.md)、[公式表](Reinforcement%20Learning/cheatsheet.md) 和专题内 [RL01 Colab notebook](Reinforcement%20Learning/notebooks/RL01_tabular_foundations.ipynb)。先完成 [R1A/R1B](Reinforcement%20Learning/01_mdp_and_return.md)，再按单元推进；采用独立 R 编号，承接主线第 16/17 课相关内容。
+
+2026-11-09新增 [R7D：你的DM Walker项目课](Reinforcement%20Learning/07d_dm_walker_project.md)，可先读24维observation/6维motor，再回接Gaussian、GAE与PPO。附 [RL02 Colab](Reinforcement%20Learning/notebooks/RL02_walker_ppo_tensor_trace.ipynb) 合成tensor trace；未重新训练Walker。
+
+## Robotics Fundamentals：机器人基础轻量专题（2026-11-03）
+
+[B0–B6 课程目录](Robotics%20Fundamentals/README.md) 与 ML/RL 专题并列。先读 [B0 关节空间、任务空间与动作空间](Robotics%20Fundamentals/00_joint_task_and_action_spaces.md)，再进入坐标系、FK、IK、Jacobian、动力学与控制。每课约 20–30 分钟，配 [一页速记与 14 问](Robotics%20Fundamentals/cheatsheet.md) 和 [RB01 notebook](Robotics%20Fundamentals/notebooks/RB01_kinematics_and_dynamics.ipynb)。
+
+## Motion Planning 与 Trajectory Generation
+
+[MP1–MP8 专题目录](Motion%20Planning/README.md)。从 C-space、A*、RRT 接到路径平滑、五次轨迹与 S 曲线、TOPP、轨迹优化和在线换轨。配有贯穿各课的两关节案例和 [45 分钟速记](Motion%20Planning/quick_review.md)。
 
 ## Darwin Robotics 二面专项
 
