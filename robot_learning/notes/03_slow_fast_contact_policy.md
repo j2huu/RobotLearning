@@ -274,10 +274,12 @@ RDP 和 ImplicitRDP 主要根据 force 生成或修正 motion action。Force Pol
 在接触点附近，环境对不同方向的约束不同。例如沿桌面切向可以移动，法向受到强约束。定义局部 interaction frame：
 
 $$
-\Sigma=(e_1,\ldots,e_6),
+\Sigma=(R_{\Sigma},p_{\Sigma}),\qquad R_{\Sigma}\in SO(3),
 $$
 
-将 6D twist/wrench 空间分为：
+这里的 IF 是三维空间坐标架；它诱导六维 twist/wrench 的坐标表示，不能把任意六维特征向量基都视作可实现的 TCP 坐标旋转。FP1 v2 附录 Supp. I 在局部保守接触、接触分布对称及合适参考点等条件下，讨论同一三维旋转对平移/转动刚度的解耦。
+
+在该局部模型与任务兼容假设下，将六维空间分为：
 
 - constraint subspace：高 stiffness，需要 force regulation；
 - admissible-motion subspace：低 stiffness，允许 position/motion control。
@@ -470,6 +472,8 @@ VLA 负责语言、对象与全局进度；local policy 输出 interaction frame
 
 ## 7. FP2：把 slow-fast interaction regulation 接到 foundation model
 
+2026-11-09同步：本节的单token、无快wrist/action头和2/50/1000Hz描述针对论文基线。实际所选peg配置的context读取位置、RLT1024、FiLM/GRU/gating、alpha训练分支和部署时钟见 [3d源码精读](03d_fp2_source_architecture_and_training.md)，不再用论文未披露参数代替当前实现。
+
 FP2 将本课的 slow-fast 思想扩展到 robotic foundation model（RFM）。当 foundation policy 是 π0、π0.5 或 GR00T 一类语言条件模型时，整个系统是 **VLA/RFM + downstream force control**；FP2 模块本身仍是 force-control policy。
 
 ### 7.1 不是把 force 塞进 foundation model
@@ -486,7 +490,7 @@ $$
 C_t\in\mathbb R^{S\times D}.
 $$
 
-RFM 不读取 wrench，action generation 也不由下游模块重做。FP2 用 compressor 将 contextual token sequence 压缩为一个 token：
+论文基线的RFM不读取wrench，action generation不由下游模块重做。Compressor将选定context压缩为一个token；源码支持不同token数和动作头消融。单token写法为：
 
 $$
 z_t=\psi(C_t)\in\mathbb R^{1\times d}.
@@ -560,6 +564,8 @@ $$
 
 这使 force policy 获得“正在执行什么任务、处于哪个动作阶段”的 RFM context，同时避免直接处理长 token sequence。
 
+上式是论文的MSE+cosine；本地OpenPI/JAX实现为MSE，`alpha=0`只训RLT，`alpha>0`还允许VLA action loss更新上游。所选force基线的具体loss为frame L1 + force L1 + .1 mask BCE。训练目标与哪个参数更新，须按实际配置分别核查。
+
 ### 7.4 它与前三种方法的关键区别
 
 | 方法 | Slow output | Fast output | 是否改变原 action |
@@ -607,6 +613,6 @@ FP2 擅长修复：
 8. RDP/ImplicitRDP 的“force-aware motion correction”和 Force Policy 的“force regulation”有什么本质区别？
 9. 如果 global VLA 为 2 Hz、local force policy 为 50 Hz，应怎样处理 global feature stale、chunk transition 和意外接触？
 10. FP2 与 RDP 都是 slow-fast，为什么一个 fast module 生成 motion action，另一个只生成 force-control parameters？
-11. 为什么 FP2 不把 force 直接输入 π0.5/GR00T，也不允许 downstream policy 重新生成 action？
+11. 为什么FP2论文基线不把force直接输入RFM、不让快策略重新生成action？当前源码哪些变体可以改变这条约束？
 
 通过标准：能在 10 分钟内不看笔记画出三张数据流图，并准确说出每篇论文的 force 在哪里进入、最终 action 是什么、谁负责闭环。

@@ -178,7 +178,7 @@ $$
 
 **60–90 秒问题：**“系统输出 1 kHz 命令，是否说明它每毫秒都能根据新观测做一次力控决策？”
 
-回答骨架：先把 policy 查询、waypoint 采样、force-policy 更新、传感器可用数据、插值输出与实际控制律分别计时。插值提高参考输出的采样密度；新物理信息由传感器及其延迟决定，新决策由对应模块的更新周期决定。FP2 的本仓库实现说明将 1 kHz 标为插值后输出口径；论文另报内部控制律的频率，应分别引用，不从其中一项推断其余各项。
+回答骨架：先把policy查询、waypoint、force-policy、传感器到达、插值与实际控制律分别计时。历史用户说明的1kHz插值与论文内部1kHz控制律分别记录；当前所选peg代码只有planner/fast目标50Hz等应用层证据，不能从其中一项推断其余各项。详见 [源码时序](03d_fp2_source_architecture_and_training.md)。
 
 **现场推演：**同一表达坐标轴下，参考点从旧点移到新点，位移 `r=[0.1,0,0] m`，力 `f=[0,10,0] N`，旧点力矩为零。新点力矩是多少？
 
@@ -198,7 +198,7 @@ $$
 
 ## 第 14 课场景卡：FP2 的 compressor 到底压缩谁
 
-配套：[力觉适配](14_force_aware_adaptation.md)、[FP2 tensor 详解](03c_fp2_tensor_walkthrough.md)，用于 14C。
+配套：[力觉适配](14_force_aware_adaptation.md)、[论文tensor详解](03c_fp2_tensor_walkthrough.md)、[3d源码精读](03d_fp2_source_architecture_and_training.md)，用于14B/14C。
 
 **60–90 秒问题：**“RFM 没有 force input，FP2 怎么利用力觉？Compressor 是不是由力产生 query？”
 
@@ -214,6 +214,14 @@ $$
 - Force loss 会更新 compressor 吗？按本课程所述 FP2 阶段，compressor 重建训练后冻结，decoder 丢弃；后续 force learning 不反传重塑它。
 - 为什么重建 context 好仍可能力控不好？重建目标与接触任务目标不同，压缩可能丢掉下游关键信息；还要评价 force-policy 与 controller 的闭环效果。
 - Force regulation 能修正选错物体吗？通常没有相应高层职责；目标/粗运动明显不对时，快速接触调节不能保证补救。
+
+**2026-11-09源码追问：** 限定peg/RLT1024/no-wrist/no-action配置，再回答：
+
+- `[B,N,2048]`为什么只取image positions仍能有语言条件？在VLM上下文化后再切片，读取依赖由上游mask决定。
+- 快策略是否也用cross-attention融合？本例用FiLM→两层GRU→FiLM，再将history/context两路gating；compressor的cross-attention不能代替这个答案。
+- raw frame/force/mask各几维？9/6/6；frame反变换成7D pose，mask阈值后还可能被设备层清除旋转轴。
+- target stop-gradient足够吗？不够，还要看输入路径和optimizer filter；alpha=0只训RLT，alpha>0有额外VLA action-loss更新分支。
+- 同一demo比较能把收益都归给压缩器吗？不能，需区分任务微调、额外force监督、实时反馈、controller和readout结构。
 
 **连接个人项目：**写清自己分析或实现过的是 context compression、force-policy 数据、控制接口还是完整闭环。ML05 的合成 compressor 与 VLA02 的规则 controller 分别展示机制，把两份 notebook 拼在一起仍不能声明复现了真实 FP2。
 

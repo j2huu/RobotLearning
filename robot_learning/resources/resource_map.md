@@ -1,5 +1,7 @@
 # 课程资源地图：Robot Learning 与 VLA
 
+2026-11-09 FP2源码入口：[3d精读](../notes/03d_fp2_source_architecture_and_training.md)，配 [论文推导](../notes/03c_fp2_tensor_walkthrough.md) 与 [来源快照](fp2_source_snapshot_2026-11-09.json)。将Ai2架构材料接入第14课，固定peg/RLT1024案例；源码、论文和教学实验分别解释，不从本地配置推断新成功率。
+
 2026-10-21：当前按 [VLA循序路线](../planning/vla_learning_path.md) 从6A开始，主线6–15课分成30个小单元。本页用于查资料，日常学习按当前单元选读；OpenVLA/Octo/ACT/DP按原始版本作架构对照，Pi专题在第11/12课深入，ML按需查缺。Colab教学实验尚无云端运行证据。
 
 [ML面试M1–M10](../notes/ml_interview/README.md) 包含CS229/PML、PyTorch与sklearn的定向参考；当前面试训练使用 [VLA场景练习](../notes/vla_interview_workbook.md)，已读ML题型无需重新通刷。

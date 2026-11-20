@@ -2,6 +2,8 @@
 
 本文针对本仓库的 [FP2 原文](../../paper/ICRA27_2601_MS.pdf)，重点对应第 3 页 Fig. 2、式 (1)–(4)、第 4 页 III-C/III-D 和第 7 页 Table II。前作的实现细节单独标为“Force Policy 前作”，来源是 [Force Policy](../../paper/2602.22088v2.pdf) 第 18 页 Supplement III；不能把它们自动当作 FP2 的已确认配置。
 
+**2026-11-09补充：** 现在已有选定FP2源码的 [3d：peg-in-hole架构与训练精读](03d_fp2_source_architecture_and_training.md)。本文保留论文层推导与教学例子；“主文未说明”不再等于“当前源码未知”。所选RLT1024/no-wrist/no-action配置可确认100点history、15→128的FiLM/GRU、两路gating及9/6/6三头；其他配置不能直接套用。
+
 ## 1. 先纠正最容易形成的误解
 
 FP2 并没有使用 force history 去引导 context compressor，也没有把 force 输入 RFM。
@@ -24,7 +26,7 @@ FP2 并没有使用 force history 去引导 context compressor，也没有把 fo
 这里有两个不同的“将大量信息变成紧凑表示”：
 
 1. **上下文压缩**：把 RFM 的多个上下文 token 汇聚成一个 token；这一步不读取力觉。
-2. **交互历史编码/融合**：force policy 根据 wrench、proprioception 历史与缓存上下文预测控制参数。如何编码这段历史，FP2 主文没有完整展开。
+2. **交互历史编码/融合**：force policy 根据 wrench、proprioception 历史与缓存上下文预测控制参数。主文未完整展开；所选源码为input FiLM→两层GRU→output FiLM→gated fusion，详见3d §7。这与compressor的cross-attention是不同操作。
 
 图 2 右侧上下叠放的 encoder / decoder 是上下文压缩的训练结构。下方 decoder 用于重建，不是部署时的 force policy。
 
@@ -51,6 +53,8 @@ FP2 并没有使用 force history 去引导 context compressor，也没有把 fo
 
 L 是历史采样点数。论文用 W_{t-H:t} 表示一段历史；若 H 是离散步数并包含两端，点数可能是 H+1，因此本文不直接把 H 当成张量第二维。
 
+上表“未说明”均指论文披露范围。所选源码另有具体合同：`C=[B,N,2048]`，`Z=[B,1,1024]`后flatten，`P=[B,100,9]`，`W=[B,100,6]`；raw frame/force/mask分别为`[B,1,9/6/6]`。它不是所有backbone共同的配置。
+
 **一个 token 不是一个标量。** z=[z₁,…,z_d] 仍有 d 个实数。它们是学习到的 latent coordinates，没有指定某一维必须是任务名、接触状态或目标力。
 
 ## 3. 第一条输出：RFM 的动作支路
@@ -66,7 +70,9 @@ oₜ 可以包含图像与机器人状态，具体组织取决于 backbone。不
 
 Fig. 2 中绿色区域及 noise 表示 RFM 原生动作生成支路的示意。FP2 不重写该支路。蓝色 contextual tokens 进入压缩器；不能把所有绿色 action tokens 一并视为 compressor 输入。具体取哪层 hidden states、是否包含各类 special/state tokens，主文没有逐 backbone 列明。
 
-原始 action chunk 经过 waypoint dropout、DTW 对齐和 quintic spline 重采样，再交给 controller：
+所选OpenPI源码先计算`prefix_out`，再以`image_only=True`截取图像位置；因此是上下文化后的image-prefix hidden states，不是原始patch，也不是直接把全部图文位置压进RLT。文本仍可能经上游attention影响图像位置。
+
+论文III-D描述原始action chunk经过waypoint dropout、DTW对齐和quintic spline重采样，再交给controller：
 
 ```text
 原生动作 waypoints，15 Hz
@@ -76,6 +82,8 @@ Fig. 2 中绿色区域及 noise 表示 RFM 原生动作生成支路的示意。F
 ```
 
 “保留 RFM action generation”指不由 force policy 再生成动作；它不意味着机器人在控力轴上的实际位姿会与原始 action 完全相同。控力闭环可以为满足目标力而改变实际运动。
+
+当前peg源码配置则选择linear位置插值+姿态SLERP，将15Hz source重采样到50Hz planner；不能把上面的论文五次样条当作该checkout已经实现的分支。
 
 ## 4. 第二条输出：context compressor 的完整形状变化
 
@@ -151,7 +159,7 @@ Proj(C)           [2, 128, 256]
 最终 z            [2, 1, 256]
 ```
 
-这次演练有两个变化：2048→256 是 feature width 变化；128→1 是 sequence length 变化。论文真实配置需要代码或补充材料确认。
+这次演练有两个变化：2048→256 是 feature width 变化；128→1 是 sequence length 变化。这仍是教学尺寸。所选源码实际使用2048→1024、一个learned query，详见3d；还支持其他token数/宽度变体。
 
 ## 5. 没有 force supervision，压缩器怎样学会保留有用信息
 
@@ -171,6 +179,8 @@ $$
 $$
 
 理解上，token-wise MSE 约束数值，cosine distance 约束 feature direction。具体归约和实现细节仍以代码为准。这里的监督来自 C 本身，不是人工定义的接触阶段标签，也不是未来 wrench。
+
+**论文与实现的区别：** 上式为论文目标；所读OpenPI/JAX `RLTokenModel.loss`实际只有MSE，trainer传入的mask为`None`。通用PyTorch compressor可配置cosine项，但不能据此断言JAX训练也用了它。冻结还需检查prefix输入的stop-gradient和optimizer filter，不能只看重建target，详见3d §4。
 
 ```text
 训练：C → compressor → z → reconstruction decoder → Ĉ
@@ -208,6 +218,8 @@ FP2 主文没有完整列出 P 每维含义。其物理作用是把力变化与�
 
 **Force Policy 前作的具体实现**：第 18 页写明使用末端 pose history，pose 为 9D continuous-rotation representation，通常可拆成 position 3D + rotation 6D；wrench 为 6D。将同一时刻的二者拼接得到 15D，是这套前作表示下的推导。前作使用 GRU 编码历史，最终 proprioceptive embedding 为 128D，并由 global context 通过 FiLM 调制。FP2 没有重列这些具体宽度，不能直接声称 FP2 必然是“15→128”。
 
+**现已核对的FP2配置：** peg/RLT1024基线确实使用100点、relative TCP pose9+wrench6，经input FiLM变128维，再进两层GRU、output FiLM并取末时刻。这一结论来自当前源码，不是把前作参数默认继承到所有FP2。Wrench仍按各时刻TCP约定处理，不可假设所有历史已搬到同一最新原点。
+
 ### 6.3 与 z 融合之后才预测力控参数
 
 论文确认的整体映射是：
@@ -227,7 +239,7 @@ W_hist、P_hist → HistoryEncoder → h_phys
 h_fused → frame head / mask head / wrench head
 ```
 
-这张抽象图表达信息依赖关系，不声称 FP2 主文规定了某一种 concat、GRU、FiLM 或 gating 的具体实现。
+这张抽象图表达论文层的信息依赖关系。所选源码现可具体化为FiLM/GRU历史支路与context直接支路的两路gated fusion；ML05的GRU+concat是另一个教学实现。
 
 z 让相似的力觉在不同任务或阶段下有不同含义；W/P 让相同的上下文能对不同的实际交互作出不同反应。例如插入中的阻力与擦拭中的法向力，未必应触发相同的调节策略。
 
@@ -238,6 +250,8 @@ z 让相似的力觉在不同任务或阶段下有不同含义；W/P 让相同�
 几何上一个 frame 可以用旋转 R 和原点 p 描述。它定义局部 x/y/z 以及相应的转动轴。Σ 不等于下一步机器人动作，也不等于图像特征。
 
 FP2 没有说明 raw head 用 quaternion、6D rotation 或其他编码。**Force Policy 前作**使用相对末端的 9D frame-pose 表示：position 3D + continuous rotation 6D。9 个编码数字不代表 9 个物理自由度。
+
+这里“没有说明”指主文；当前所选FP2源码的frame head确认为9D，processor反变换后为TCP-relative xyz+wxyz quaternion，共7D。
 
 ### 7.2 s：六个轴分别控位置还是控力
 
@@ -260,7 +274,7 @@ $$
 
 W_ref∈R⁶ 是目标，不是当前传感器读数，也不是最终关节命令。controller 主要在 mask 选中的轴上使用它。
 
-如果延续前作的 9D frame 编码，结构输出可写成 9+6+6=21 个数；这是前作接口下的说明，FP2 主文没有确认其 raw output width 为 21。mask 在网络内部是否先输出 logits、怎样离散化，也需实现确认。
+论文未确认raw width；当前选定源码现已确认三个独立头输出9+6+6=21个数，frame/force用L1、mask用BCEWithLogits，推理sigmoid后以0.5阈值转bool。设备适配层还会清除mask后三个旋转轴，模型输出与实际启用轴必须分开检查。
 
 ## 8. controller 如何把两条支路合成真实动作
 
@@ -291,7 +305,7 @@ u_motion 由 RFM motion-reference tracking 产生；u_force 由 wrench error 等
 
 从学习模块看，measured wrench 是 π_F 的输入；从完整闭环看，显式力控制还需要低层比较 desired/measured wrench。这里必须区分插值后指令流的频率、传感器反馈更新率与低层控制律的执行率，不能仅由 1 kHz 插值输出推断传感器也以 1 kHz 提供新测量。
 
-## 9. 多速率不是三个模型一起跑
+## 9. 多速率：论文、历史说明与当前源码分别记录
 
 | 环节 | 频率 | 理解与来源 |
 |---|---:|---|
@@ -300,11 +314,11 @@ u_motion 由 RFM motion-reference tracking 产生；u_force 由 wrench error 等
 | chunk 原始 waypoints | 15 Hz | 相邻 waypoint 的时间间隔约 66.7 ms |
 | force policy | 50 Hz | 每 20 ms 读取更新的历史并预测结构参数 |
 | motion reference | 50 Hz | 对齐与样条重采样的结果 |
-| 插值后的参考/指令流 | 1 kHz | 按本次补充的实际实现口径，每 1 ms 输出一个插值采样点；不是 π_F 的新预测 |
+| 论文内部低层控制律 | 1 kHz | III-D的底层口径，不是新模型预测或传感器到达率 |
 
-按本次补充的实际实现，50 Hz 参考/指令经过插值形成 1 kHz 输出流。理想同步情况下，一次 slow update 之间约有 25 个 fast steps，一个 fast step 对应约 20 个插值采样点。插值增加输出采样点，不增加新的策略预测；实际异步推理延迟也意味着各次更新不保证整齐落在上述时刻。
+上表为论文系统；理想2Hz/50Hz同步下可数出一次slow期间25个fast steps，但异步延迟会改变实际时序。此前用户补充的“1kHz是插值输出”作为相应实现的历史口径保留，不能自动回填为当前Python线程频率。
 
-需要同时保留原文的口径：FP2 第 4 页 III-D 将五次样条重采样的结果写为 50 Hz，并另行说明低层控制律在内部以 1 kHz 执行。“插值后的指令流为 1 kHz”与“低层控制律以 1 kHz 执行”可以同时成立，但属于不同层次的频率。前者不能单独证明后者，也不能证明 force policy 或力传感器以 1 kHz 更新。具体哪些指令字段参与 50→1000 Hz 插值，仍需相应实现确认。
+2026-11-09所选源码：source15Hz、planner/fast目标50Hz、F/T buffer轮询200Hz，100点history按50Hz取样；`max_infer_dt=.5s`是距上次slow完成后的请求条件，不是实测固定2Hz。当前应用层不证明有50→1000Hz命令插值或1kHz Python反馈，需另核对SDK、实验版本与时间日志。详见3d §10。
 
 15 Hz 是 chunk 内 waypoint 的采样频率，不是 RFM 推理频率。2 Hz 是生成一整段轨迹的频率，也不意味着机器人只以 2 Hz 移动。
 
@@ -318,7 +332,11 @@ u_motion 由 RFM motion-reference tracking 产生；u_force 由 wrench error 等
 
 阶段 3 冻结 RFM 和 compressor；阶段 2 的 reconstruction decoder 不部署。接触结构标签沿用前作从 demonstration 恢复的办法；不等于 compressor 自动提供了 frame/mask 标签，也不等于在线需要人工标注。
 
+上表描述论文训练流程。当前OpenPI trainer额外支持`alpha>0`的联合action-loss分支：重建输入仍stop-gradient，VLA可通过额外action loss更新。alpha=0只训练RLT；离线token后的force训练不回传RFM/RLT。当前peg标签消费与未来序列重组已读，但原始标注生成全过程尚未审计，不能直接把前作labeler当来源证明。
+
 FP2 主文没有重列完整 π_F 的各项损失和权重，不能把前作含动作生成项的总 loss 整体照搬给 FP2。
+
+选定源码现在可确认`L_frame + L_force + .1 L_mask`，基线没有action loss。50个未来标签经过接触预告/释放规则重组为1步监督；规则和严格边界手算见3d §8–9。
 
 ## 11. 什么证据支持这些模块的分工
 

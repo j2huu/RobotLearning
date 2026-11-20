@@ -623,7 +623,7 @@ def ml05():
         with torch.no_grad():
             print('projected:', compressor.projection(C[:2]).shape,
                   '| z:', compressor(C[:2]).shape, '| reconstruction:', decoder(compressor(C[:2])).shape)
-        """), md("## 5. 仅用 train C 训练重建\nLoss=MSE+0.1×token-wise cosine distance。没有 force loss，未训练真实 RFM。"), code("""
+        """), md("## 5. 仅用 train C 训练重建\n本toy用MSE+0.1×token-wise cosine distance，没有force loss，未训练真实RFM。2026-11-09源码对照：所读OpenPI/JAX RLT使用MSE；通用PyTorch分支可另配cosine，不能混为同一训练实现。这里保留教学目标。"), code("""
         COMPRESSOR_STEPS = 300
         optimizer = torch.optim.AdamW(list(compressor.parameters())+list(decoder.parameters()), lr=.003)
         reconstruction_trace = []
@@ -638,7 +638,7 @@ def ml05():
                 reconstruction_trace.append([step, float(objective.detach()), val_mse])
         trace = np.asarray(reconstruction_trace)
         plt.plot(trace[:, 0], trace[:, 2]); plt.xlabel('step'); plt.ylabel('validation reconstruction MSE'); plt.show()
-        """), md("## 6. 冻结 compressor，训练三头 force sidecar\n这里选择 GRU+concat+MLP 作为教学配置。实际 FP2 主文没有完整公开该层配置。"), code("""
+        """), md("## 6. 冻结 compressor，训练三头 force sidecar\n本toy选择较小的GRU+concat+MLP，标签为合成数据。2026-11-09所选peg/RLT1024源码另有FiLM→两层128D GRU→FiLM→两路gated fusion、frame9/force6/mask6三头；本cell不实现该完整结构。先用toy理解冻结，再回课程3d对照真实配置。"), code("""
         compressor.eval().requires_grad_(False)
         for parameter in compressor.parameters():
             parameter.grad = None

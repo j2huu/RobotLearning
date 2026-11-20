@@ -2,6 +2,8 @@
 
 本节回答两个问题：FP2 中的 adaptor 到底适配什么，以及 twist、wrench、interaction frame 和 hybrid controller 怎样构成一条可执行的控制链。
 
+2026-11-09：本篇保留论文架构与几何推导，具体实现转到 [3d：peg/RLT1024源码精读](03d_fp2_source_architecture_and_training.md)。当前基线可确认FiLM/GRU/gating和三头；wrist/action头、RLT宽度均可配置。图里的2/50/1000Hz是论文分层，不代表当前Python部署循环的实测频率。
+
 参考论文：
 
 - [FP2: Equipping Robotic Foundation Models with Force Control](../../paper/ICRA27_2601_MS.pdf)
@@ -68,7 +70,7 @@ $$
 
 ```text
 Q: “为了下游接触控制，我现在需要知道什么？”
-K,V: RFM 的所有 contextual tokens
+K,V: 所选的 contextual tokens；OpenPI本训练路径取上下文化后的图像位置
 cross-attention output: 一个紧凑的任务上下文 z_t
 ```
 
@@ -88,6 +90,8 @@ $$
 
 MSE 约束数值重建，cosine loss 约束 token 表示的方向。训练完成后 decoder 被丢弃，encoder/compressor 冻结。部署时 $z_t$ 只在 RFM 更新时重新计算，并在两个 slow step 之间缓存。
 
+上式是论文目标；当前所读OpenPI/JAX实现使用MSE，不能把通用PyTorch compressor的可选cosine项套到它上面。alpha=0时外层stop-gradient与optimizer filter共同冻结VLA；源码还提供alpha>0的action-loss联合分支，详见3d §4。
+
 它的作用是：
 
 - 统一不同 RFM 与 force policy 的表示接口；
@@ -101,7 +105,7 @@ $$
 =\pi_F(z_t,W_{t-H:t},P_{t-H:t}).
 $$
 
-这里 $W_{t-H:t}$ 是**测得的 wrench 历史**，$hat W_t$ 是**期望 wrench**，两者不要混为一谈。
+这里 $W_{t-H:t}$ 是**测得的 wrench 历史**，$\hat W_t$ 是**期望 wrench**，两者不要混为一谈。
 
 ---
 
@@ -278,6 +282,10 @@ Force Policy 的核心构造思想是：
 ```
 
 frame 的价值是把一个随物体姿态和接触几何变化的问题，转成局部坐标系中近似固定的控制模式。
+
+**2026-11-04，FP1 v2 附录核实：** 以上是物理直觉与坐标构造摘要。Supp. I 的统一空间基结论依赖局部保守弹性、Hertz 接触建模及接触域/刚度分布的反射对称性，并在刚度中心表达 wrench/twist；任务意图与主轴对齐也有额外假设。任意对称六维刚度矩阵存在正交特征基，并不保证这个基可以写成同一个三维旋转的两份副本。正文 IV-A 的实际恢复把原点放在末端，并不估计精确接触点；应区分理论参考点与工程近似。这里也没有证明在线控制在所有接触条件下稳定。[论文正文与附录](https://arxiv.org/html/2602.22088v2)
+
+**插孔轴的约定：** 上面的曲面例子不能直接当作插孔配方。FP1 v2 正文 Table I 将 insertion 的前进方向设为 IF 的 x 轴，并给出理论 mask $[0,1,1,0,1,1]$，在所选侧向力/力矩分量上采用零参考以提供柔顺；实际有摩擦时的轴向控制和各设备的可执行轴仍需另述。零目标力也是主动的控制目标，不等于关闭该轴力控。当前 FP1 本地 AdvancedFrameLabeler 含有任务特定的实践分支，其 CONTACT_ANCHOR 规则不能不经核对就等同于论文表格，更不能直接当成 FP2 peg 数据已使用的标注方案。
 
 ---
 

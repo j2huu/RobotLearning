@@ -94,7 +94,7 @@ Global 与 local policy 的频率和推理延迟不同。直接替换 chunk 会�
 
 ## 15. 用一分钟解释 FP2
 
-FP2 保留 task-adapted RFM 的原生 action generation，并冻结 RFM。它把 RFM contextual tokens 自监督压缩为一个 cached token，与实时 wrench/proprioception history 一起输入 50 Hz force-control policy。Fast policy 只预测 interaction frame、force-position selection mask 和 desired wrench；原始 RFM action 经过对齐与重采样后，和这些参数共同进入 1 kHz hybrid force-position controller。因此它添加的是 interaction regulation，不是 action re-generation。
+FP2先按原生流程适配RFM，论文基线随后冻结上游，压缩context供快策略与实时wrench/proprioception联合使用。所选peg/RLT1024/no-wrist/no-action配置中，快策略是FiLM/GRU/gated fusion与frame、force、mask三头；它沿用VLA运动参考。论文2/50/1000Hz是分层口径，当前代码目标50Hz的planner/fast循环不证明1kHz反馈。源码也支持action/wrist消融，须限定配置。[3d源码主线](03d_fp2_source_architecture_and_training.md)
 
 ## 16. FP2 和 RDP 都是 slow-fast，区别是什么？
 
@@ -107,6 +107,26 @@ Force 通常不在 foundation pretraining interface 中，直接加入会改变 
 ## 18. FP2 的能力边界是什么？
 
 它要求 foundation action 大体可行。FP2 可以减少过大力、失去接触或 jamming，但无法可靠修复错误目标、严重位置偏差或错误的 task-level motion。面试中应把它描述为 interaction failure suppressor，而不是通用 motion recovery policy。
+
+## 19. RLT的Q/K/V来自哪里？它压缩全部图文位置吗？
+
+所选OpenPI路径先计算上下文化的prefix_out，再取图像位置；learned query提供Q，选定context提供K/V，不读实时force。本例`[B,N,2048]→[B,1,1024]→[B,1024]`。图像位置可已经受语言影响；其他backbone取feature的位置要另查。
+
+## 20. 重建target做stop-gradient，是否就冻结了VLA？
+
+不够。输入C→encoder→decoder→loss仍有梯度。所读trainer先stop-gradient prefix输入，alpha=0再仅优化rlt_module；alpha>0额外action loss可更新VLA。OpenPI/JAX用MSE，不能把论文MSE+cosine当同一实现。
+
+## 21. 三个头的标签与loss是什么？
+
+本例frame9/force6用L1，mask6用BCEWithLogits，总和权重1/1/.1；没有快action loss。未来50步标签经过接触预告/保持/释放变成1步reference；35/40<.9会释放，36/40不满足严格小于。代码“current”指标签第0项，remove_first后通常是锚点后20ms。
+
+## 22. 成功率提升如何排除任务微调或更多数据的影响？
+
+从同一个任务适配checkpoint比较baseline/+FP2，并控制demo/split/controller/测试初态。这样衡量额外交互系统收益；同一demo仍有额外wrench监督与实时反馈，需force-aware对照及内部消融定位各部分。论文`π0 LoRA`和`π0.5 full`不是同一模型的LoRA/full消融。
+
+## 23. 模型预测六维mask，机器人就能六维控力吗？
+
+不一定。所选设备接口会清除后三个旋转轴；switch由预测mask派生，可能true但实际执行轴全false。需分别记录模型mask、scheduler状态和设备mask。归一化也不等于限幅：本processor的1.4可反归一化成70N，限值必须沿执行链核对。
 
 ## 19. 开放问题
 

@@ -46,6 +46,8 @@
 
 基础参考：[ML 面试 M1–M10](../../notes/ml_interview/README.md)。当前主线优先VLA01→生成机制实验→VLA02；对应第6/7/8/9/13/14课。
 
+2026-11-09源码对照：[FP2 peg/RLT1024精读](../../notes/03d_fp2_source_architecture_and_training.md) 的快路径为FiLM/GRU/gated fusion，OpenPI重建为MSE。ML05仍保留其较小的GRU+concat和MSE+cosine教学设计，VLA02仍为spring规则控制实验。Notebook不导入本地FP2 checkout，不需上传私有数据/权重；不能将toy结果当作该源码配置的复现。
+
 ## 文件约定
 
 - 每份 notebook 都包含所需函数、模型和数据生成代码；上传单个文件即可，不使用 `%run`、`git clone`、本仓库路径或用户电脑的绝对路径。

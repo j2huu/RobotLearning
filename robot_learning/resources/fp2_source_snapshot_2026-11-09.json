@@ -1,0 +1,122 @@
+{
+  "verified_on": "2026-11-09",
+  "verification": "read-only static source inspection and SHA256 comparison; no model execution",
+  "checkout": "/Users/junjianhu/Repositories/Noematrix/fp2",
+  "head": "f020bd5d514d6148e389ca9e14b008854bf3a3f0",
+  "worktree_dirty": true,
+  "notes": [
+    {
+      "path": "/Users/junjianhu/Documents/JOB/interview/Ai2_interview/09_fp2_architecture_and_training.md",
+      "sha256": "7a8cd940db02d0197340576238b09e20f14182aa4949ff574f0f440a2d6e2d2d"
+    },
+    {
+      "path": "/Users/junjianhu/Documents/JOB/interview/Ai2_interview/10_fp2_runtime_and_control.md",
+      "sha256": "d781cb14f30752bce3cd08ff3fac6a968c7adc58dd92b652c40fc8d8fd7cf684"
+    }
+  ],
+  "files": [
+    {
+      "path": "runner/configs/peg_togethertrained_pi05_rlt1024_100k_fp2_20k_deploy.yaml",
+      "sha256": "768d1bd3229aaeb41472aee0e8ac2deacf6d1c0739e22094c329ba57c488ba26",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "configs/policy/_flip_fp2_base.py",
+      "sha256": "b99cfe16f0bd871e26698d178606a96033b365c14913d3fd4a97aebaa6d5d568",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "configs/policy/flip_fp2_rlt1024_no_wrist.py",
+      "sha256": "ad8c16ce2e4615497595f41cd2789ad3a3f5790f8210a8de62d1f1cbfd5dce84",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "configs/processor/flip_fp2.py",
+      "sha256": "fffebc339a6ead4106cad09c550990cc91b357e963513975c7a52757e3f81356",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "configs/dataset/peg_in_hole_v2_200sets_15hz.py",
+      "sha256": "af99c288b19be6f18e5c46043863d04f526fb5ab385ead8627d262cdfe5a6305",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "vla_adapter/openpi_adapter/model.py",
+      "sha256": "c6cbe61fb68db9f9c29b3a0eda34df7677a02a7b49e4d9215cc0657d1b043356",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "vla_adapter/openpi_adapter/train_rlt.py",
+      "sha256": "5218a29219dbdf875887f3425f446fbd7639283ff34667bd1efd7a9b44c9a8d4",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "vla_adapter/openpi_adapter/pi0_integration.py",
+      "sha256": "d4d1130eb9145d5fbda1a08cc1a93e508607fe3f68d1956b576d56b5fd6d2682",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "vla_adapter/openpi_adapter/configs.py",
+      "sha256": "ce10b1329ec461f85f21dc695679385728402ce15d6d3bc10ef1e4ffe75a7ce8",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "policy/force_policy2/force_policy.py",
+      "sha256": "c0af76e6195c7e189fba95ce15719e90f3df69697b7ba33fe5a79b70d8288f68",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "policy/force_policy2/fusion.py",
+      "sha256": "8af92aeb7313ebbae3a7e4c569d64d67d6e7860a7d3b835c90496fd3fdf088dd",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "policy/common/seq_encoder.py",
+      "sha256": "162393006751e9d904b7e91ea6b9abf223f82dc7f47f9e9d8fef9fd414c3de68",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "runner/fp2_policy.py",
+      "sha256": "345b43dcb715bb8d82db101edd152f1d6bc519b292d7421ae85862245fb44f6a",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "runner/slow_fast_scheduler.py",
+      "sha256": "dc9fa52d247a4e9da4b0717b2a8475b13ce50202d49959bea0ac507dc6da3c3e",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "runner/robot_interface.py",
+      "sha256": "6485d74899fa73a6f8a93ee587c9ac003eaf6bccc275da8ebd176c9ec73ed22d",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "runner/obs_buffers.py",
+      "sha256": "c6e8c81d56806bdc8359fb1bb2c093e621ac0dc13a2f109dca5ac73175d7f849",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "runner/serve_pi05_rltoken.py",
+      "sha256": "eae0cda706ea23d60936bf683b9b1b4c80e9b2ff0ce96a15d7d2a0216be6a4fe",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "data_infra/dataset/lowdim_loader.py",
+      "sha256": "f03e772707cba0eb8d966f3e1a52fcfe8eba909f8a78f4a71bedebace93f4275",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "forcebench_native/runtime.py",
+      "sha256": "c3393b008f54d499963439a974ebd4c7d368a266ca88f4e9a9eef4b978fc79d5",
+      "matches_ai2_2026_11_04_snapshot": true
+    },
+    {
+      "path": "forcebench_native/instrumentation.py",
+      "sha256": "c50109552c8d8556e69ab5f10b081980134188b48cb42a9eac058bfc8da9d69f",
+      "matches_ai2_2026_11_04_snapshot": true
+    }
+  ],
+  "runtime_execution": "not performed",
+  "weights_loaded": false,
+  "robot_connection": false
+}

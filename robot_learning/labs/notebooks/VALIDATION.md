@@ -21,6 +21,10 @@
 
 ## 首次 Colab 验收
 
+2026-11-09 FP2同步：只修改ML05的两处Markdown说明，并同步生成器与manifest；8个code cells逐项比较保持原样。说明当前peg源码的FiLM/GRU/gating与OpenPI MSE，避免将较小toy当作源码复现。没有运行notebook、训练或新增云端结果。
+
+本轮重新核对11份manifest文件的SHA256、唯一cell IDs、空输出，并静态编译88个code cells，均通过。课程新增链接无失效目标；全库扫描另有一个本轮前已存在的Darwin入口失效，记录于本轮`tmp/fp2_sync_2026-11-09/validation.json`，不作FP2运行证据。
+
 | 文件 | 结构/语法 | Colab 执行 | 学习者解释 |
 |---|---|---|---|
 | Lab01_probabilistic_bc.ipynb | 已检查 | 待运行 | 待完成 |

@@ -56,13 +56,15 @@ TCP/sensor 偏移会影响力矩解释。完整对偶变换与符号约定见 [t
 | interpolation/output | 每秒输出多少平滑采样点？ |
 | control law / plant | 反馈律与硬件/仿真积分各在什么周期执行？ |
 
-本仓库关于 FP2 的实际实现补充将1 kHz标为插值后输出口径；论文 III-D 还另报内部低层控制律1 kHz。两者不矛盾，但不能用插值频率推断 learned policy、传感器或闭环带宽。
+此前用户实现说明将1kHz标为插值后输出，论文III-D另报内部低层控制律1kHz。2026-11-09核对的peg源码则只确认source15Hz、planner/fast目标50Hz、F/T buffer轮询200Hz；不能把历史口径当成当前Python循环。`max_infer_dt=.5s`也不等于实测2Hz，详见 [3d §10](03d_fp2_source_architecture_and_training.md)。
 
 ## 5. Chunk alignment 与连续性
 
 推理耗时后，新 chunk 的起点可能已经过时。用 recent execution history 识别当前相位，按明确规则选/丢 waypoint，再连接轨迹。DTW 是一种对齐思路，不是对任何接触都安全的通用删点操作。
 
 Quintic spline 等方法可以约束连接的 position/velocity/acceleration 连续性。SO(3) 旋转、二值 mask、gripper switch 与 wrench 不应默认采用相同的逐元素插值。
+
+论文的quintic spline与所选peg代码的linear+SLERP分别记录；当前`interp_continuous_dynamics`转调linear，不可仅凭函数名宣称实现了速度/加速度连续性。
 
 ## 6. VLA02 教学实验
 

@@ -189,17 +189,17 @@ action positions → vector field  [2,8,7]
 
 **手算检查：** 同一坐标轴下，r从旧点指向新点，r=(0.1,0,0)m，f=(0,10,0)N，旧点moment=0；新点moment=`−r×f=(0,0,−1)`N·m。若把r定义反过来，公式符号也需随之改变。
 
-**频率口径：** 用户实现里的1kHz是插值后输出；不能据此断言force policy或新传感反馈1kHz。原论文内部控制律的频率作为另一项记录。教学VLA02的100Hz sensor、2Hz context等也不是FP2确认配置。
+**频率口径：** 历史用户说明中的1kHz插值输出、论文内部1kHz控制律、当前源码planner/fast目标50Hz分别记录。当前代码没有证明Python以1kHz闭环运行，`.5s`slow请求条件也不是固定2Hz。教学VLA02的100Hz sensor、2Hz context不是实测FP2配置，参见 [3d](../notes/03d_fp2_source_architecture_and_training.md)。
 
 ### 第 14 课：force 的位置与 FP2
 
-打开 [讲义](../notes/14_force_aware_adaptation.md) 与 [FP2 tensor详解](../notes/03c_fp2_tensor_walkthrough.md)。前置：理解cross-attention和物理控制接口后再读，避免把所有箭头统称为“融合”。
+打开 [讲义](../notes/14_force_aware_adaptation.md)、[论文tensor详解](../notes/03c_fp2_tensor_walkthrough.md) 与 [3d源码精读](../notes/03d_fp2_source_architecture_and_training.md)。前置：理解cross-attention和物理控制接口后再读，避免把所有箭头统称为“融合”。3d的D1–D4是可按需拆开的源码小节，不要求一次全读完。
 
 | 单元 | 本次只回答 | 产出与检查 |
 |---|---|---|
 | 14A：三种force入口 | 是条件化动作、修正motion，还是预测控制参数？ | 同一接触任务画三条forward graph，标各自output及controller要求 |
-| 14B：compressor与训练 | 谁提供Q/K/V，哪一阶段读force？ | learned-query为Q，context为K/V；压缩训练重建，冻结后histories进入force policy |
-| 14C：完整系统与边界 | 三项输出怎样与raw motion reference一起使用？ | 画Σ、6D mask、desired wrench及measured feedback；标各模块频率和一次失效场景 |
+| 14B：compressor与训练 | 谁提供Q/K/V，哪个loss更新谁？ | 读3d §2–5：image-only contextual prefix、RLT1024、MSE、输入stop-gradient与alpha分支 |
+| 14C：完整系统与边界 | 三项输出怎样与raw motion reference一起使用？ | 读3d §6–11：FiLM/GRU/gate、三头、未来标签、执行mask与实际时钟；设计受控对照 |
 
 **检查答案：** FP2 compressor本身不读取wrench；实时wrench/proprioception在下游force policy融合。Hybrid controller接收处理后的motion reference、结构参数及真实反馈；RGB经上游表示起作用。原始action generation保留，不等于实际TCP轨迹逐点不变。
 
